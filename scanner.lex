@@ -4,7 +4,7 @@
 %option noyywrap
 
 %{
-    #include "tokens.h"
+    #include "parser.h"
 %}
 
 
@@ -29,6 +29,13 @@ number {digit}*
 "-"			{	return MINUS;	}
 "*"			{	return TIMES;	}
 "/"			{	return DIVIDE;	}
+"=="		{	return EQUAL_EQUAL;	}
+"!="		{	return NOT_EQUAL;	}
+"<="		{	return LT_EQUAL;	}
+"<"			{	return LT;	}
+">="		{	return GT_EQUAL;	}
+">"			{	return GT;	}
+"!"			{	return NOT;	}
 if			{	return IF;		}
 else		{	return ELSE;	}
 
