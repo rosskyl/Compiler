@@ -31,4 +31,4 @@ lex.yy.c:		scanner.lex
 				flex scanner.lex
 
 clean:
-				rm -rf *.o core.* $(EXE)
+				rm -rf *.o core.* $(EXE) parser.c parser.h scanner.c
