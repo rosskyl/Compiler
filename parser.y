@@ -22,6 +22,7 @@
 %token AND
 %token OR
 %token NOT
+%token EQUAL
 %token EQUAL_EQUAL
 %token LT //less than
 %token LT_EQUAL //less than or equal
@@ -40,18 +41,19 @@
 %token MODULUS
 %token EXPONENT
 %token WHILE
-
+%token TRUE
+%token FALSE
 %token BREAK
 %token CONTINUE
 %token RETURN
+
 %token CLASS
 %token PASS
 %token ID
 %token TYPE_KEYWORD
 %token INT_KEYWORD
 %token BOOL_KEYWORD
-%token TRUE
-%token FALSE
+
 
 
 
@@ -93,9 +95,15 @@ stmt:		  // empty string
 			| if_stmt
 			| while
 			| RETURN exp
+			| BREAK
+			| CONTINUE
+			| assign
 ;
 
 block:		L_CURLY lines R_CURLY
+;
+
+assign:		ID EQUAL exp
 ;
 
 while:		WHILE boolExp stmts

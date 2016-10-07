@@ -26,13 +26,14 @@ number {digit}*
 "-="		{	return MINUS_EQUAL;	}
 "*="		{	return TIMES_EQUAL;	}
 "/="		{	return DIVIDE_EQUAL;	}
-"%="			{	return MODULUS_EQUAL;	}
+"%="		{	return MODULUS_EQUAL;	}
 "+"			{	return PLUS;	}
 "-"			{	return MINUS;	}
 "*"			{	return TIMES;	}
 "/"			{	return DIVIDE;	}
 "%"			{	return MODULUS;	}
-"^"			{	return EXPONENT;	}
+"^"			{	return EXPONENT;}
+"="			{	return EQUAL;	}
 "=="		{	return EQUAL_EQUAL;	}
 "!="		{	return NOT_EQUAL;	}
 "<="		{	return LT_EQUAL;	}
@@ -46,6 +47,9 @@ while		{	return WHILE;	}
 return		{	return RETURN;	}
 [tT]rue		{	return TRUE;	}
 [fF]alse	{	return FALSE;	}
+break		{	return BREAK;	}
+continue	{	return CONTINUE;}
+
 
 [a-zA-Z_][a-zA-Z0-9_]* {	return ID;	}
 [\t\r]
