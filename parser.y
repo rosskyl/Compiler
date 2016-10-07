@@ -34,10 +34,12 @@
 %token PLUS_EQUAL
 %token DIVIDE_EQUAL
 %token TIMES_EQUAL
+%token MODULUS_EQUAL
 %token PLUS
 %token MINUS
 %token DIVIDE
 %token TIMES
+%token MODULUS
 
 %token EXPONENT
 %token BREAK
@@ -99,6 +101,7 @@ exp:		  NUMBER
 			| exp MINUS exp        	{ $$ = $1 - $3;    }
 			| exp TIMES exp        	{ $$ = $1 * $3;    }
 			| exp DIVIDE exp        	{ $$ = $1 / $3;    }
+			| exp MODULUS exp
 			| MINUS exp  %prec NEG 	{ $$ = -$2;        }
 			| L_PAREN exp R_PAREN        	{ $$ = $2;         }
 ;

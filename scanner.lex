@@ -26,10 +26,12 @@ number {digit}*
 "-="		{	return MINUS_EQUAL;	}
 "*="		{	return TIMES_EQUAL;	}
 "/="		{	return DIVIDE_EQUAL;	}
+"%="			{	return MODULUS_EQUAL;	}
 "+"			{	return PLUS;	}
 "-"			{	return MINUS;	}
 "*"			{	return TIMES;	}
 "/"			{	return DIVIDE;	}
+"%"			{	return MODULUS;	}
 "=="		{	return EQUAL_EQUAL;	}
 "!="		{	return NOT_EQUAL;	}
 "<="		{	return LT_EQUAL;	}
