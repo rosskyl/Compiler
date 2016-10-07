@@ -74,12 +74,16 @@ lines:		  //empty string
 ;
 
 line:		  separator
-			| stmt separator 			{ printf("\t%.10g\n", $1); }
+			| stmts separator 			{ printf("\t%.10g\n", $1); }
 ;
 
 // line separator
 separator:	NEWLINE
 			| SEMICOLON
+;
+
+stmts:		block
+			| stmt
 ;
 
 stmt:		  // empty string
@@ -92,8 +96,8 @@ stmt:		  // empty string
 block:		L_CURLY lines R_CURLY
 ;
 
-if_stmt:	IF boolExp stmt ELSE stmt
-			| IF boolExp stmt
+if_stmt:	IF boolExp stmts ELSE stmts
+			| IF boolExp stmts
 ;
 
 exp:		  NUMBER
