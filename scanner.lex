@@ -32,6 +32,7 @@ number {digit}*
 "*"			{	return TIMES;	}
 "/"			{	return DIVIDE;	}
 "%"			{	return MODULUS;	}
+"^"			{	return EXPONENT;	}
 "=="		{	return EQUAL_EQUAL;	}
 "!="		{	return NOT_EQUAL;	}
 "<="		{	return LT_EQUAL;	}
@@ -41,6 +42,10 @@ number {digit}*
 "!"			{	return NOT;	}
 if			{	return IF;		}
 else		{	return ELSE;	}
+while		{	return WHILE;	}
+return		{	return RETURN;	}
+[tT]rue		{	return TRUE;	}
+[fF]alse	{	return FALSE;	}
 
 [a-zA-Z_][a-zA-Z0-9_]* {	return ID;	}
 [\t\r]

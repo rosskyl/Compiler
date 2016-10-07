@@ -22,8 +22,6 @@
 %token AND
 %token OR
 %token NOT
-%token TRUE
-%token FALSE
 %token EQUAL_EQUAL
 %token LT //less than
 %token LT_EQUAL //less than or equal
@@ -40,11 +38,11 @@
 %token DIVIDE
 %token TIMES
 %token MODULUS
-
 %token EXPONENT
+%token WHILE
+
 %token BREAK
 %token CONTINUE
-%token WHILE
 %token RETURN
 %token CLASS
 %token PASS
@@ -52,6 +50,9 @@
 %token TYPE_KEYWORD
 %token INT_KEYWORD
 %token BOOL_KEYWORD
+%token TRUE
+%token FALSE
+
 
 
 %left MINUS PLUS
@@ -90,10 +91,14 @@ stmt:		  // empty string
 			| exp 	{ $$ = $1;	}
 			| boolExp
 			| if_stmt
-			| block
+			| while
+			| RETURN exp
 ;
 
 block:		L_CURLY lines R_CURLY
+;
+
+while:		WHILE boolExp stmts
 ;
 
 if_stmt:	IF boolExp stmts ELSE stmts
@@ -106,7 +111,8 @@ exp:		  NUMBER
 			| exp TIMES exp        	{ $$ = $1 * $3;    }
 			| exp DIVIDE exp        	{ $$ = $1 / $3;    }
 			| exp MODULUS exp
-			| MINUS exp  %prec NEG 	{ $$ = -$2;        }
+			| exp EXPONENT exp
+			| MINUS exp  %prec NEG 	{ $$ = -$2; }
 			| L_PAREN exp R_PAREN        	{ $$ = $2;         }
 ;
 
@@ -120,6 +126,8 @@ boolExp:    exp LT exp
 			| exp OR exp
 			| NOT boolExp
 			| L_PAREN boolExp R_PAREN
+			| TRUE
+			| FALSE
 ;
 
 %%
