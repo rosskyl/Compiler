@@ -58,7 +58,8 @@
 %right '^'    /* exponentiation        */
 %left "and" "or" /* for boolean expressions */
 
-//%nonassoc LT LT_EQUAL GT GT_EQUAL 
+%left NOT
+%nonassoc LT LT_EQUAL GT GT_EQUAL EQUAL_EQUAL NOT_EQUAL
 
 /* Grammar follows */
 %%
