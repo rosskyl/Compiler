@@ -65,18 +65,18 @@ program:    /* empty string */
 
 line:		  NEWLINE
 			| stmt NEWLINE 			{ printf("\t%.10g\n", $1); }
-			| 'q' NEWLINE  			{ printf("quitting\n"); exit(0); }
 ;
 
 stmt:		exp 	{ $$ = $1;	}
 			| boolExp
-//			| if_stmt	{ $$ = $1;	}
+			| if_stmt
 ;
 
-//if_stmt:	'i''f' boolExp stmt 'e''l''s''e' stmt 	{ $$ = $3;	}
-//;
+if_stmt:	IF boolExp stmt ELSE stmt
+			| IF boolExp stmt
+;
 
-exp:		  NUMBER				{ $$ = $1;         }
+exp:		  NUMBER
 			| exp PLUS exp			{ $$ = $1 + $3;    }
 			| exp MINUS exp        	{ $$ = $1 - $3;    }
 			| exp TIMES exp        	{ $$ = $1 * $3;    }
@@ -85,16 +85,16 @@ exp:		  NUMBER				{ $$ = $1;         }
 			| L_PAREN exp R_PAREN        	{ $$ = $2;         }
 ;
 
-boolExp:    exp LT exp	     		{$$ = $1;		}
-			| exp LT_EQUAL exp		{$$ = $1;		}
-			| exp GT  exp			{$$ = $1;		}
-			| exp GT_EQUAL exp		{$$ = $1;		}
-			| exp EQUAL_EQUAL exp	{$$ = $1;		}
-			| exp NOT_EQUAL exp		{$$ = $1;		}
-			| exp AND exp			{$$ = $1;		}
-			| exp OR exp			{$$ = $1;		}
-			| NOT exp 				{$$ = $1;		}
-			| L_PAREN boolExp R_PAREN	{$$ = $2;		}
+boolExp:    exp LT exp
+			| exp LT_EQUAL exp
+			| exp GT  exp
+			| exp GT_EQUAL exp
+			| exp EQUAL_EQUAL exp
+			| exp NOT_EQUAL exp
+			| exp AND exp
+			| exp OR exp
+			| NOT exp
+			| L_PAREN boolExp R_PAREN
 ;
 
 %%
