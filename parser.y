@@ -52,11 +52,13 @@
 %token BOOL_KEYWORD
 
 
-%left '-' '+'
-%left '*' '/'
+%left MINUS PLUS
+%left TIMES DIVIDE
 %left NEG     /* negation--unary minus */
 %right '^'    /* exponentiation        */
 %left "and" "or" /* for boolean expressions */
+
+//%nonassoc LT LT_EQUAL GT GT_EQUAL 
 
 /* Grammar follows */
 %%
@@ -72,6 +74,7 @@ line:		  separator
 			| stmt separator 			{ printf("\t%.10g\n", $1); }
 ;
 
+// line separator
 separator:	NEWLINE
 			| SEMICOLON
 ;
@@ -107,7 +110,7 @@ boolExp:    exp LT exp
 			| exp NOT_EQUAL exp
 			| exp AND exp
 			| exp OR exp
-			| NOT exp
+			| NOT boolExp
 			| L_PAREN boolExp R_PAREN
 ;
 
