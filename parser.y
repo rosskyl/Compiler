@@ -15,6 +15,7 @@
 %token R_CURLY
 %token NUMBER
 %token NEWLINE
+%token SEMICOLON
 %token IF
 %token ELSE
 
@@ -63,13 +64,26 @@ program:    /* empty string */
         | program line
 ;
 
-line:		  NEWLINE
-			| stmt NEWLINE 			{ printf("\t%.10g\n", $1); }
+lines:		  //empty string
+			| lines line
 ;
 
-stmt:		exp 	{ $$ = $1;	}
+line:		  separator
+			| stmt separator 			{ printf("\t%.10g\n", $1); }
+;
+
+separator:	NEWLINE
+			| SEMICOLON
+;
+
+stmt:		  // empty string
+			| exp 	{ $$ = $1;	}
 			| boolExp
 			| if_stmt
+			| block
+;
+
+block:		L_CURLY lines R_CURLY
 ;
 
 if_stmt:	IF boolExp stmt ELSE stmt

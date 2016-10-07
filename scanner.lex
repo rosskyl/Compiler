@@ -21,6 +21,7 @@ number {digit}*
 "}"			{	return R_CURLY;	}
 {number}    {	return NUMBER;	}
 \n			{	return NEWLINE;	}
+";"			{	return SEMICOLON;	}
 "+="		{	return PLUS_EQUAL;	}
 "-="		{	return MINUS_EQUAL;	}
 "*="		{	return TIMES_EQUAL;	}
