@@ -49,6 +49,10 @@ return		{	return RETURN;	}
 [fF]alse	{	return FALSE;	}
 break		{	return BREAK;	}
 continue	{	return CONTINUE;}
+pass		{	return PASS;	}
+int			{	return INT_KEYWORD;	}
+bool		{	return BOOL_KEYWORD;}
+type		{	return TYPE_KEYWORD;}
 
 
 [a-zA-Z_][a-zA-Z0-9_]* {	return ID;	}
@@ -57,8 +61,6 @@ continue	{	return CONTINUE;}
 %%
 
 //http://dinosaur.compilertools.net/flex/flex_19.html
-
-//TODO does not work with (())
 
 
 

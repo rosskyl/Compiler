@@ -18,7 +18,6 @@
 %token SEMICOLON
 %token IF
 %token ELSE
-
 %token AND
 %token OR
 %token NOT
@@ -46,13 +45,15 @@
 %token BREAK
 %token CONTINUE
 %token RETURN
-
-%token CLASS
-%token PASS
 %token ID
-%token TYPE_KEYWORD
+%token PASS
 %token INT_KEYWORD
 %token BOOL_KEYWORD
+
+
+%token CLASS
+
+%token TYPE_KEYWORD
 
 
 
@@ -77,7 +78,7 @@ lines:		  //empty string
 ;
 
 line:		  separator
-			| stmts separator 			{ printf("\t%.10g\n", $1); }
+			| stmts separator
 ;
 
 // line separator
@@ -89,18 +90,26 @@ stmts:		block
 			| stmt
 ;
 
-stmt:		  // empty string
-			| exp 	{ $$ = $1;	}
-			| boolExp
-			| if_stmt
+stmt:		  if_stmt
 			| while
 			| RETURN exp
 			| BREAK
 			| CONTINUE
+			| PASS
 			| assign
+			| decl
 ;
 
 block:		L_CURLY lines R_CURLY
+;
+
+type:		INT_KEYWORD
+			| BOOL_KEYWORD
+			| ID //will need to make sure the ID is a class or type
+;
+
+decl:		type ID
+			| type ID EQUAL exp
 ;
 
 assign:		ID EQUAL exp
@@ -114,6 +123,7 @@ if_stmt:	IF boolExp stmts ELSE stmts
 ;
 
 exp:		  NUMBER
+			| ID // will need to make sure ID is actually a saved variable
 			| exp PLUS exp			{ $$ = $1 + $3;    }
 			| exp MINUS exp        	{ $$ = $1 - $3;    }
 			| exp TIMES exp        	{ $$ = $1 * $3;    }
@@ -149,31 +159,5 @@ yyerror (s)  /* Called by yyparse on error */
 main ()
 {
   yyparse ();
+  printf("Valid program\n");
 }
-
-/* Lexical analyzer returns a double floating point 
-   number on the stack and the token NUM, or the ASCII
-   character read if not a number.  Skips all blanks
-   and tabs, returns 0 for EOF. */
-
-
-// yylex ()
-// {
-  // int c;
-
-  // /* skip white space  */
-  // while ((c = getchar ()) == ' ' || c == '\t')  
-    // ;
-  // /* process numbers   */
-  // if (c == '.' || isdigit (c))                
-    // {
-      // ungetc (c, stdin);
-      // scanf ("%lf", &yylval);
-      // return NUM;
-    // }
-  // /* return end-of-file  */
-  // if (c == EOF)                            
-    // return 0;
-  // /* return single chars */
-  // return c;                                
-// }
