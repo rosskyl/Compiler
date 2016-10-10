@@ -113,6 +113,11 @@ decl:		type ID
 ;
 
 assign:		ID EQUAL exp
+			| ID PLUS_EQUAL exp
+			| ID MINUS_EQUAL exp
+			| ID TIMES_EQUAL exp
+			| ID DIVIDE_EQUAL exp
+			| ID MODULUS_EQUAL exp
 ;
 
 while:		WHILE boolExp stmts
