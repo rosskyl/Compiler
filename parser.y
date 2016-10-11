@@ -123,7 +123,9 @@ assign:		ID EQUAL exp
 while:		WHILE boolExp stmts
 ;
 
-if_stmt:	IF boolExp stmts ELSE stmts
+if_stmt:	IF boolExp separator stmts ELSE stmts
+			| IF boolExp separator stmts
+			| IF boolExp stmts ELSE stmts
 			| IF boolExp stmts
 ;
 
@@ -164,5 +166,5 @@ yyerror (s)  /* Called by yyparse on error */
 main ()
 {
   yyparse ();
-  printf("Valid program\n");
+  printf("\n");
 }
