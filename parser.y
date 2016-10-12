@@ -18,7 +18,7 @@
 %token R_PAREN
 %token L_CURLY
 %token R_CURLY
-%token <num_value> NUMBER
+%token NUMBER
 %token NEWLINE
 %token SEMICOLON
 %token IF
@@ -55,6 +55,7 @@
 %token INT_KEYWORD
 %token BOOL_KEYWORD
 
+%token PRINT
 
 %token CLASS
 
@@ -103,9 +104,14 @@ stmt:		  if_stmt
 			| PASS
 			| assign
 			| decl
+			| print
 ;
 
 block:		L_CURLY lines R_CURLY
+;
+
+print:		PRINT L_PAREN exp R_PAREN 	{	printf("%g", $3);	}
+		| PRINT L_PAREN boolExp R_PAREN	{	printf("%g", $3);	}
 ;
 
 type:		INT_KEYWORD
@@ -134,16 +140,16 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 			| IF boolExp stmts
 ;
 
-exp:		  NUMBER //{printf("%d",number_value);}
+exp:		  NUMBER 	{ $$ = number_value;}
 			| ID //{printf("%s",id_value);}// will need to make sure ID is actually a saved variable
-			| exp PLUS exp			//{ $$ = $1 + $3;    }
-			| exp MINUS exp        	//{ $$ = $1 - $3;    }
-			| exp TIMES exp        	//{ $$ = $1 * $3;    }
-			| exp DIVIDE exp        	//{ $$ = $1 / $3;    }
-			| exp MODULUS exp
-			| exp EXPONENT exp
-			| MINUS exp  %prec NEG 	//{ $$ = -$2; }
-			| L_PAREN exp R_PAREN        	//{ $$ = $2;	}
+			| exp PLUS exp			{ $$ = $1 + $3;	}
+			| exp MINUS exp			{ $$ = $1 - $3;	}
+			| exp TIMES exp			{ $$ = $1 * $3;	}
+			| exp DIVIDE exp		{ $$ = $1 / $3;	}
+			//| exp MODULUS exp		{ $$ = $1 % $3;	}
+			| exp EXPONENT exp		{ $$ = pow($1,$3);}
+			| MINUS exp  %prec NEG	{ $$ = -$2;		}
+			| L_PAREN exp R_PAREN	{ $$ = $2;		}
 ;
 
 boolExp:    exp LT exp

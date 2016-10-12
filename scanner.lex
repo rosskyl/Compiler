@@ -55,7 +55,7 @@ pass		{	return PASS;	}
 int			{	return INT_KEYWORD;	}
 bool		{	return BOOL_KEYWORD;}
 type		{	return TYPE_KEYWORD;}
-
+print		{	return PRINT;	}
 
 [a-zA-Z_][a-zA-Z0-9_]* {	id_value = yytext;
 							return ID;	}
