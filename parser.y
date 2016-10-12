@@ -116,7 +116,7 @@ print:		PRINT L_PAREN exp R_PAREN 	{	printf("%g", $3);	}
 
 type:		INT_KEYWORD
 			| BOOL_KEYWORD
-			| ID //will need to make sure the ID is a class or type
+			//| ID //will need to make sure the ID is a class or type
 ;
 
 decl:		type ID
