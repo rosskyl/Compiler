@@ -5,6 +5,7 @@
 
 %{
     #include "parser.h"
+	#include "vars.h"
 %}
 
 
@@ -19,7 +20,8 @@ number {digit}*
 ")"         {	return R_PAREN;	}
 "{"			{	return L_CURLY;	}
 "}"			{	return R_CURLY;	}
-{number}    {	return NUMBER;	}
+{number}    {	number_value = atoi(yytext);
+				return NUMBER;	}
 \n			{	return NEWLINE;	}
 ";"			{	return SEMICOLON;	}
 "+="		{	return PLUS_EQUAL;	}
@@ -55,7 +57,8 @@ bool		{	return BOOL_KEYWORD;}
 type		{	return TYPE_KEYWORD;}
 
 
-[a-zA-Z_][a-zA-Z0-9_]* {	return ID;	}
+[a-zA-Z_][a-zA-Z0-9_]* {	id_value = yytext;
+							return ID;	}
 [\t\r]
 
 %%

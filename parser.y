@@ -2,18 +2,23 @@
 /* Infix notation calculator--calc */
 
 %{
-#define YYSTYPE double
+//#define YYSTYPE double
 #include <stdio.h>
 #include <math.h>
 #include <ctype.h>
+#include "vars.h"
 %}
 
+
+
 /* BISON Declarations */
+%define api.value.type {double}
+
 %token L_PAREN
 %token R_PAREN
 %token L_CURLY
 %token R_CURLY
-%token NUMBER
+%token <num_value> NUMBER
 %token NEWLINE
 %token SEMICOLON
 %token IF
@@ -129,16 +134,16 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 			| IF boolExp stmts
 ;
 
-exp:		  NUMBER
-			| ID // will need to make sure ID is actually a saved variable
-			| exp PLUS exp			{ $$ = $1 + $3;    }
-			| exp MINUS exp        	{ $$ = $1 - $3;    }
-			| exp TIMES exp        	{ $$ = $1 * $3;    }
-			| exp DIVIDE exp        	{ $$ = $1 / $3;    }
+exp:		  NUMBER //{printf("%d",number_value);}
+			| ID //{printf("%s",id_value);}// will need to make sure ID is actually a saved variable
+			| exp PLUS exp			//{ $$ = $1 + $3;    }
+			| exp MINUS exp        	//{ $$ = $1 - $3;    }
+			| exp TIMES exp        	//{ $$ = $1 * $3;    }
+			| exp DIVIDE exp        	//{ $$ = $1 / $3;    }
 			| exp MODULUS exp
 			| exp EXPONENT exp
-			| MINUS exp  %prec NEG 	{ $$ = -$2; }
-			| L_PAREN exp R_PAREN        	{ $$ = $2;         }
+			| MINUS exp  %prec NEG 	//{ $$ = -$2; }
+			| L_PAREN exp R_PAREN        	//{ $$ = $2;	}
 ;
 
 boolExp:    exp LT exp
