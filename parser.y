@@ -152,18 +152,18 @@ exp:		  NUMBER 	{ $$ = number_value;}
 			| L_PAREN exp R_PAREN	{ $$ = $2;		}
 ;
 
-boolExp:    exp LT exp
-			| exp LT_EQUAL exp
-			| exp GT  exp
-			| exp GT_EQUAL exp
-			| exp EQUAL_EQUAL exp
-			| exp NOT_EQUAL exp
-			| exp AND exp
-			| exp OR exp
-			| NOT boolExp
-			| L_PAREN boolExp R_PAREN
-			| TRUE
-			| FALSE
+boolExp:    exp LT exp	{ $$ = $1 < $3;	}
+			| exp LT_EQUAL exp	{ $$ = $1 <= $3;	}
+			| exp GT  exp		{ $$ = $1 > $3;		}
+			| exp GT_EQUAL exp	{ $$ = $1 >= $3;	}
+			| exp EQUAL_EQUAL exp	{ $$ = $1 == $3;	}
+			| exp NOT_EQUAL exp	{ $$ = $1 != $3;	}
+			| boolExp AND boolExp	{ $$ = $1 && $3;	}
+			| boolExp OR boolExp	{ $$ = $1 || $3;	}
+			| NOT boolExp		{ $$ = !($2);		}
+			| L_PAREN boolExp R_PAREN	{ $$ = $2;	}
+			| TRUE			{ $$ = 1;		}
+			| FALSE			{ $$ = 0;		}
 ;
 
 %%
