@@ -6,7 +6,9 @@
 #include <stdio.h>
 #include <math.h>
 #include <ctype.h>
-#include "vars.h"
+#include "globals.h"
+#include "scope.h"
+
 %}
 
 
@@ -141,7 +143,7 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 ;
 
 exp:		  NUMBER 	{ $$ = number_value;}
-			| ID //{printf("%s",id_value);}// will need to make sure ID is actually a saved variable
+			| ID 				{ $$ = getVariable(id_value); }//{printf("%s",id_value);}// will need to make sure ID is actually a saved variable
 			| exp PLUS exp			{ $$ = $1 + $3;	}
 			| exp MINUS exp			{ $$ = $1 - $3;	}
 			| exp TIMES exp			{ $$ = $1 * $3;	}

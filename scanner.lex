@@ -5,7 +5,7 @@
 
 %{
     #include "parser.h"
-	#include "vars.h"
+	#include "globals.h"
 %}
 
 

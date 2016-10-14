@@ -1,2 +1,7 @@
 parser.y:
 	need to get modulus working 
+
+scope.c:
+	actually implement functions
+
+need to add a struct for variables
