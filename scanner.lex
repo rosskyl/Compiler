@@ -7,7 +7,8 @@
 #define YY_DECL extern "C" int yylex()
 
 #include "parser.h"
-//#include "globals.h"
+#include "globals.h"
+
 
 %}
 
@@ -23,7 +24,7 @@ number {digit}*
 ")"         {	return R_PAREN;	}
 "{"			{	return L_CURLY;	}
 "}"			{	return R_CURLY;	}
-{number}    {	//number_value = atoi(yytext);
+{number}    {	number_value = atoi(yytext);
 				return NUMBER;	}
 \n			{	return NEWLINE;	}
 ";"			{	return SEMICOLON;	}
@@ -63,7 +64,7 @@ and		{	return AND;	}
 or		{	return OR;	}
 
 
-[a-zA-Z_][a-zA-Z0-9_]* {	//id_value = yytext;
+[a-zA-Z_][a-zA-Z0-9_]* {	id_value = yytext;
 							return ID;	}
 [\t\r]
 

@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <ctype.h>
-//#include "globals.h"
+#include "globals.h"
 #include "scope.h"
 
 using namespace std;
@@ -14,7 +14,6 @@ using namespace std;
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
-
 
 
 void yyerror(const char* s);
@@ -150,7 +149,7 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 			| IF boolExp stmts
 ;
 
-exp:		  NUMBER 	//{ $$ = number_value;}
+exp:		  NUMBER 	{ $$ = number_value;}
 			| ID 				//{ $$ = getVariable(id_value); }
 			| exp PLUS exp			{ $$ = $1 + $3;	}
 			| exp MINUS exp			{ $$ = $1 - $3;	}
