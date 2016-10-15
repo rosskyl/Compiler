@@ -1,5 +1,5 @@
-#ifndef __VARS_H__
-#define __VARS_H__
+#ifndef __GLOBALS_H__
+#define __GLOBALS_H__
 
 
 int number_value;

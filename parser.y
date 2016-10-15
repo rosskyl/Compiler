@@ -1,17 +1,26 @@
 
 /* Infix notation calculator--calc */
+%output "parser.c"
 
 %{
-//#define YYSTYPE double
 #include <stdio.h>
 #include <math.h>
 #include <ctype.h>
-#include "globals.h"
+//#include "globals.h"
 #include "scope.h"
 
+using namespace std;
+
+extern "C" int yylex();
+extern "C" int yyparse();
+extern "C" FILE *yyin;
+
+
+
+void yyerror(const char* s);
+
+
 %}
-
-
 
 /* BISON Declarations */
 %define api.value.type {double}
@@ -62,7 +71,6 @@
 %token CLASS
 
 %token TYPE_KEYWORD
-
 
 
 
@@ -142,8 +150,8 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 			| IF boolExp stmts
 ;
 
-exp:		  NUMBER 	{ $$ = number_value;}
-			| ID 				{ $$ = getVariable(id_value); }//{printf("%s",id_value);}// will need to make sure ID is actually a saved variable
+exp:		  NUMBER 	//{ $$ = number_value;}
+			| ID 				//{ $$ = getVariable(id_value); }
 			| exp PLUS exp			{ $$ = $1 + $3;	}
 			| exp MINUS exp			{ $$ = $1 - $3;	}
 			| exp TIMES exp			{ $$ = $1 * $3;	}
@@ -170,14 +178,16 @@ boolExp:    exp LT exp	{ $$ = $1 < $3;	}
 
 %%
 
-yyerror (s)  /* Called by yyparse on error */
-     char *s;
+//yyerror (s)  /* Called by yyparse on error */
+//     char *s;
+void yyerror(const char* s)
 {
   printf ("%s\n", s);
 }
 
-main ()
+main (int, char**)
 {
   yyparse ();
   printf("\n");
+  return 0;
 }
