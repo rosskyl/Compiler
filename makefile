@@ -1,12 +1,12 @@
 CC=g++
-OBJECTS=parser.o scanner.o globals.o
+OBJECTS=parser.o scanner.o globals.o scope.o
 EXE=prog
 
 $(EXE):     		$(OBJECTS)
 			$(CC) -o $(EXE) $(OBJECTS)
 
-scope.o:		scope.c scope.h
-			$(CC) -c scope.c -o scope.o
+scope.o:		scope.cpp scope.h
+			$(CC) -c scope.cpp -o scope.o
 
 globals.o:		globals.cpp globals.h
 			$(CC) -c globals.cpp -o globals.o

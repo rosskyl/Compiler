@@ -1,13 +1,19 @@
 #ifndef __SCOPE_H__
 #define __SCOPE_H__
 
+#include <map>
 
 
-int getVariable(char* id);
 
-void setVariable(char* id, int newValue);
-
-void initializeVariable(char* id);
+class Scope {
+	public:
+		Scope();
+		void initializeVar(char* id, int newValue);
+		int getVar(char* id);
+		void setVar(char* id, int newValue);
+	private:
+		std::map<char*, int> variables;
+};
 
 
 

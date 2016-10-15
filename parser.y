@@ -9,7 +9,6 @@
 #include "globals.h"
 #include "scope.h"
 
-using namespace std;
 
 extern "C" int yylex();
 extern "C" int yyparse();
@@ -18,7 +17,7 @@ extern "C" FILE *yyin;
 
 void yyerror(const char* s);
 
-
+using namespace std;
 %}
 
 /* BISON Declarations */
@@ -152,7 +151,7 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 
 exp:			INTEGER 			{ $$ = int_value; }
 			| FLOAT				{ $$ = float_value; }
-			| ID 				//{ $$ = getVariable(id_value); }
+			| ID 				{ $$ = globalScope.getVar(id_value); }
 			| exp PLUS exp			{ $$ = $1 + $3;	}
 			| exp MINUS exp			{ $$ = $1 - $3;	}
 			| exp TIMES exp			{ $$ = $1 * $3;	}
