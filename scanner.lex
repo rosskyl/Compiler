@@ -17,15 +17,18 @@
 
 digit [0-9]
 
-number {digit}*
+integer {digit}*
+float {digit}*\.{digit}+
 
 %%
 "("         {	return L_PAREN;	}
 ")"         {	return R_PAREN;	}
 "{"			{	return L_CURLY;	}
 "}"			{	return R_CURLY;	}
-{number}    {	number_value = atoi(yytext);
-				return NUMBER;	}
+{float}			{	float_value = atof(yytext);
+				return FLOAT;}
+{integer}		{	int_value = atoi(yytext);
+				return INTEGER;	}
 \n			{	return NEWLINE;	}
 ";"			{	return SEMICOLON;	}
 "+="		{	return PLUS_EQUAL;	}

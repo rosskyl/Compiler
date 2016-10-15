@@ -22,13 +22,14 @@ void yyerror(const char* s);
 %}
 
 /* BISON Declarations */
-%define api.value.type {double}
+%define api.value.type {float}
 
 %token L_PAREN
 %token R_PAREN
 %token L_CURLY
 %token R_CURLY
-%token NUMBER
+%token INTEGER
+%token FLOAT
 %token NEWLINE
 %token SEMICOLON
 %token IF
@@ -149,7 +150,8 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 			| IF boolExp stmts
 ;
 
-exp:		  NUMBER 	{ $$ = number_value;}
+exp:			INTEGER 			{ $$ = int_value; }
+			| FLOAT				{ $$ = float_value; }
 			| ID 				//{ $$ = getVariable(id_value); }
 			| exp PLUS exp			{ $$ = $1 + $3;	}
 			| exp MINUS exp			{ $$ = $1 - $3;	}
