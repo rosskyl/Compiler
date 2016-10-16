@@ -5,7 +5,7 @@ EXE=prog
 $(EXE):     		$(OBJECTS)
 			$(CC) -o $(EXE) $(OBJECTS)
 
-scope.o:		scope.cpp scope.h
+scope.o:		scope.cpp scope.h parser.y
 			$(CC) -c scope.cpp -o scope.o
 
 globals.o:		globals.cpp globals.h

@@ -2,6 +2,7 @@
 #define __SCOPE_H__
 
 #include <map>
+#include <string>
 
 
 
@@ -11,8 +12,9 @@ class Scope {
 		void initializeVar(char* id, int newValue);
 		int getVar(char* id);
 		void setVar(char* id, int newValue);
+		bool isVar(char* id);
 	private:
-		std::map<char*, int> variables;
+		std::map<std::string, int> variables;
 };
 
 

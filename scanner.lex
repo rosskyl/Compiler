@@ -67,7 +67,7 @@ and		{	return AND;	}
 or		{	return OR;	}
 
 
-[a-zA-Z_][a-zA-Z0-9_]* {	id_value = yytext;
+[a-zA-Z_][a-zA-Z0-9_]* {	id_value = strdup(yytext);
 							return ID;	}
 [\t\r]
 

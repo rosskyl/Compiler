@@ -15,10 +15,14 @@ extern "C" int yyparse();
 extern "C" FILE *yyin;
 
 
-void yyerror(const char* s);
+
 
 using namespace std;
 %}
+
+%code provides {
+	void yyerror(const char* s);
+}
 
 /* BISON Declarations */
 %define api.value.type {float}
@@ -128,16 +132,16 @@ type:		INT_KEYWORD
 			//| ID //will need to make sure the ID is a class or type
 ;
 
-decl:		type ID
-			| type ID EQUAL exp
+decl:		type ID					{ globalScope.initializeVar(id_value,-1);	}
+			| type ID EQUAL exp		{ globalScope.initializeVar(id_value,$4);	}
 ;
 
-assign:		ID EQUAL exp
-			| ID PLUS_EQUAL exp
-			| ID MINUS_EQUAL exp
-			| ID TIMES_EQUAL exp
-			| ID DIVIDE_EQUAL exp
-			| ID MODULUS_EQUAL exp
+assign:		ID EQUAL exp			{ globalScope.setVar(id_value, $3);	}
+			| ID PLUS_EQUAL exp		{ globalScope.setVar(id_value, globalScope.getVar(id_value) + $3);	}
+			| ID MINUS_EQUAL exp	{ globalScope.setVar(id_value, globalScope.getVar(id_value) - $3);	}
+			| ID TIMES_EQUAL exp	{ globalScope.setVar(id_value, globalScope.getVar(id_value) * $3);	}
+			| ID DIVIDE_EQUAL exp	{ globalScope.setVar(id_value, globalScope.getVar(id_value) / $3);	}
+			//| ID MODULUS_EQUAL exp 	{ globalScope.setVar(id_value, globalScope.getVar(id_value) % $3);	}
 ;
 
 while:		WHILE boolExp stmts
@@ -150,8 +154,8 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 ;
 
 exp:			INTEGER 			{ $$ = int_value; }
-			| FLOAT				{ $$ = float_value; }
-			| ID 				{ $$ = globalScope.getVar(id_value); }
+			| FLOAT					{ $$ = float_value; }
+			| ID 					{ $$ = globalScope.getVar(id_value); }
 			| exp PLUS exp			{ $$ = $1 + $3;	}
 			| exp MINUS exp			{ $$ = $1 - $3;	}
 			| exp TIMES exp			{ $$ = $1 * $3;	}
@@ -178,11 +182,11 @@ boolExp:    exp LT exp	{ $$ = $1 < $3;	}
 
 %%
 
-//yyerror (s)  /* Called by yyparse on error */
-//     char *s;
+
 void yyerror(const char* s)
 {
   printf ("%s\n", s);
+  exit(-1);
 }
 
 main (int, char**)
