@@ -1,7 +1,2 @@
-parser.y:
-	need to get modulus working 
-
-scope.c:
-	actually implement functions
-
-need to add a struct for variables
+Figure out how to save more than one type of variable
+Figure out how to do if and while

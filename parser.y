@@ -79,6 +79,7 @@ using namespace std;
 
 %left MINUS PLUS
 %left TIMES DIVIDE
+%left MODULUS
 %left NEG     /* negation--unary minus */
 %right '^'    /* exponentiation        */
 %left "and" "or" /* for boolean expressions */
@@ -141,7 +142,7 @@ assign:		ID EQUAL exp			{ globalScope.setVar(id_value, $3);	}
 			| ID MINUS_EQUAL exp	{ globalScope.setVar(id_value, globalScope.getVar(id_value) - $3);	}
 			| ID TIMES_EQUAL exp	{ globalScope.setVar(id_value, globalScope.getVar(id_value) * $3);	}
 			| ID DIVIDE_EQUAL exp	{ globalScope.setVar(id_value, globalScope.getVar(id_value) / $3);	}
-			//| ID MODULUS_EQUAL exp 	{ globalScope.setVar(id_value, globalScope.getVar(id_value) % $3);	}
+			| ID MODULUS_EQUAL exp 	{ globalScope.setVar(id_value, static_cast<int>(globalScope.getVar(id_value)) % static_cast<int>($3));	}
 ;
 
 while:		WHILE boolExp stmts
@@ -160,7 +161,7 @@ exp:			INTEGER 			{ $$ = int_value; }
 			| exp MINUS exp			{ $$ = $1 - $3;	}
 			| exp TIMES exp			{ $$ = $1 * $3;	}
 			| exp DIVIDE exp		{ $$ = $1 / $3;	}
-			//| exp MODULUS exp		{ $$ = $1 % $3;	}
+			| exp MODULUS exp		{ $$ = static_cast<int>($1) % static_cast<int>($3);	}
 			| exp EXPONENT exp		{ $$ = pow($1,$3);}
 			| MINUS exp  %prec NEG	{ $$ = -$2;		}
 			| L_PAREN exp R_PAREN	{ $$ = $2;		}
