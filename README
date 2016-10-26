@@ -12,3 +12,4 @@ right now the program just validates input, it does not give valuable output
 right now the program takes input from stdio
 program can be run with an input file with the following command:
 	'prog < inputfile'
+press CTRL + D to end input
