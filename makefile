@@ -14,7 +14,7 @@ scope.o:		scope.cpp scope.h parser.y
 globals.o:		globals.cpp globals.h scope.h nodes.h
 			$(CC) -c globals.cpp -o globals.o
 
-parser.o:		parser.c parser.h parser.y globals.h
+parser.o:		parser.c parser.y globals.h scope.h nodes.h
 			$(CC) -c parser.c -o parser.o
 
 parser.h:		parser.y

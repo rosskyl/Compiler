@@ -8,7 +8,7 @@
 #include <ctype.h>
 #include "globals.h"
 #include "scope.h"
-
+#include "nodes.h"
 
 extern "C" int yylex();
 extern "C" int yyparse();
@@ -24,8 +24,12 @@ using namespace std;
 	void yyerror(const char* s);
 }
 
+%code requires {
+	#include "nodes.h"
+}
+
 /* BISON Declarations */
-%define api.value.type {float}
+%define api.value.type {Node*}
 
 %token L_PAREN
 %token R_PAREN
@@ -124,8 +128,8 @@ stmt:		  if_stmt
 block:		L_CURLY lines R_CURLY
 ;
 
-print:		PRINT L_PAREN exp R_PAREN 	{	printf("%g", $3);	}
-		| PRINT L_PAREN boolExp R_PAREN	{	printf("%g", $3);	}
+print:		PRINT L_PAREN exp R_PAREN 	//{	printf("%g", $3);	}
+		| PRINT L_PAREN boolExp R_PAREN	//{	printf("%g", $3);	}
 ;
 
 type:		INT_KEYWORD
@@ -133,16 +137,16 @@ type:		INT_KEYWORD
 			//| ID //will need to make sure the ID is a class or type
 ;
 
-decl:		type ID					{ globalScope.initializeVar(id_value,-1);	}
-			| type ID EQUAL exp		{ globalScope.initializeVar(id_value,$4);	}
+decl:		type ID					//{ globalScope.initializeVar(id_value,-1);	}
+			| type ID EQUAL exp		//{ globalScope.initializeVar(id_value,$4);	}
 ;
 
-assign:		ID EQUAL exp			{ globalScope.setVar(id_value, $3);	}
-			| ID PLUS_EQUAL exp		{ globalScope.setVar(id_value, globalScope.getVar(id_value) + $3);	}
-			| ID MINUS_EQUAL exp	{ globalScope.setVar(id_value, globalScope.getVar(id_value) - $3);	}
-			| ID TIMES_EQUAL exp	{ globalScope.setVar(id_value, globalScope.getVar(id_value) * $3);	}
-			| ID DIVIDE_EQUAL exp	{ globalScope.setVar(id_value, globalScope.getVar(id_value) / $3);	}
-			| ID MODULUS_EQUAL exp 	{ globalScope.setVar(id_value, static_cast<int>(globalScope.getVar(id_value)) % static_cast<int>($3));	}
+assign:		ID EQUAL exp			//{ globalScope.setVar(id_value, $3);	}
+			| ID PLUS_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) + $3);	}
+			| ID MINUS_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) - $3);	}
+			| ID TIMES_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) * $3);	}
+			| ID DIVIDE_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) / $3);	}
+			| ID MODULUS_EQUAL exp 	//{ globalScope.setVar(id_value, static_cast<int>(globalScope.getVar(id_value)) % static_cast<int>($3));	}
 ;
 
 while:		WHILE boolExp stmts
@@ -154,31 +158,31 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 			| IF boolExp stmts
 ;
 
-exp:			INTEGER 			{ $$ = int_value; }
-			| FLOAT					{ $$ = float_value; }
-			| ID 					{ $$ = globalScope.getVar(id_value); }
-			| exp PLUS exp			{ $$ = $1 + $3;	}
-			| exp MINUS exp			{ $$ = $1 - $3;	}
-			| exp TIMES exp			{ $$ = $1 * $3;	}
-			| exp DIVIDE exp		{ $$ = $1 / $3;	}
-			| exp MODULUS exp		{ $$ = static_cast<int>($1) % static_cast<int>($3);	}
-			| exp EXPONENT exp		{ $$ = pow($1,$3);}
-			| MINUS exp  %prec NEG	{ $$ = -$2;		}
-			| L_PAREN exp R_PAREN	{ $$ = $2;		}
+exp:			INTEGER 			//{ $$ = int_value; }
+			| FLOAT				//{ $$ = float_value; }
+			| ID 				//{ $$ = globalScope.getVar(id_value); }
+			| exp PLUS exp			//{ $$ = $1 + $3;	}
+			| exp MINUS exp			//{ $$ = $1 - $3;	}
+			| exp TIMES exp			//{ $$ = $1 * $3;	}
+			| exp DIVIDE exp		//{ $$ = $1 / $3;	}
+			| exp MODULUS exp		//{ $$ = static_cast<int>($1) % static_cast<int>($3);	}
+			| exp EXPONENT exp		//{ $$ = pow($1,$3);}
+			| MINUS exp  %prec NEG		//{ $$ = -$2;		}
+			| L_PAREN exp R_PAREN		//{ $$ = $2;		}
 ;
 
-boolExp:    exp LT exp	{ $$ = $1 < $3;	}
-			| exp LT_EQUAL exp	{ $$ = $1 <= $3;	}
-			| exp GT  exp		{ $$ = $1 > $3;		}
-			| exp GT_EQUAL exp	{ $$ = $1 >= $3;	}
-			| exp EQUAL_EQUAL exp	{ $$ = $1 == $3;	}
-			| exp NOT_EQUAL exp	{ $$ = $1 != $3;	}
-			| boolExp AND boolExp	{ $$ = $1 && $3;	}
-			| boolExp OR boolExp	{ $$ = $1 || $3;	}
-			| NOT boolExp		{ $$ = !($2);		}
-			| L_PAREN boolExp R_PAREN	{ $$ = $2;	}
-			| TRUE			{ $$ = 1;		}
-			| FALSE			{ $$ = 0;		}
+boolExp:		exp LT exp		//{ $$ = $1 < $3;	}
+			| exp LT_EQUAL exp	//{ $$ = $1 <= $3;	}
+			| exp GT  exp		//{ $$ = $1 > $3;		}
+			| exp GT_EQUAL exp	//{ $$ = $1 >= $3;	}
+			| exp EQUAL_EQUAL exp	//{ $$ = $1 == $3;	}
+			| exp NOT_EQUAL exp	//{ $$ = $1 != $3;	}
+			| boolExp AND boolExp	//{ $$ = $1 && $3;	}
+			| boolExp OR boolExp	//{ $$ = $1 || $3;	}
+			| NOT boolExp		//{ $$ = !($2);		}
+			| L_PAREN boolExp R_PAREN	//{ $$ = $2;	}
+			| TRUE			//{ $$ = 1;		}
+			| FALSE			//{ $$ = 0;		}
 ;
 
 %%
