@@ -94,7 +94,7 @@ using namespace std;
 /* Grammar follows */
 %%
 program:    /* empty string */
-        | program line
+        | line program 	{	progNode.lines.push_back($$);	}
 ;
 
 lines:		  //empty string
