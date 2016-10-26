@@ -6,6 +6,17 @@
 //have all inherit from Node
 enum BoolOp {LT_OP, GT_OP, EQ_OP, NOT_EQ_OP, LT_EQ_OP, GT_EQ_OP, NOT_OP};
 
+struct Node;
+struct ProgramNode;
+struct IfNode;
+struct WhileNode;
+struct BlockNode;
+struct BoolExpNode;
+struct NumExpNode;
+struct IntNode;
+struct FloatNode;
+
+
 struct Node {
 	virtual void eval();
 	Node* parent;
@@ -18,14 +29,14 @@ struct ProgramNode : Node {
 
 struct IfNode : Node {
 	virtual void eval();
-	Node* condition;
+	BoolExpNode* condition;
 	Node* ifCode;
 	Node* elseCode;
 };
 
 struct WhileNode : Node {
 	virtual void eval();
-	Node* condition;
+	BoolExpNode* condition;
 	Node* code;
 };
 

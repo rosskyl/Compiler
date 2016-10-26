@@ -158,7 +158,11 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 			| IF boolExp stmts
 ;
 
-exp:			INTEGER 			//{ $$ = int_value; }
+exp:			INTEGER 		{	IntNode* tmpNode = new IntNode;
+							tmpNode->val = int_value;
+							tmpNode->eval();
+							$$ = tmpNode;
+						}
 			| FLOAT				//{ $$ = float_value; }
 			| ID 				//{ $$ = globalScope.getVar(id_value); }
 			| exp PLUS exp			//{ $$ = $1 + $3;	}
