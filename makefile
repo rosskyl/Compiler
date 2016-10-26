@@ -1,14 +1,17 @@
 CC=g++
-OBJECTS=parser.o scanner.o globals.o scope.o
+OBJECTS=parser.o scanner.o globals.o scope.o nodes.o
 EXE=prog
 
 $(EXE):     		$(OBJECTS)
 			$(CC) -o $(EXE) $(OBJECTS)
 
+nodes.o:		nodes.cpp nodes.h
+			$(CC) -c nodes.cpp -o nodes.o
+
 scope.o:		scope.cpp scope.h parser.y
 			$(CC) -c scope.cpp -o scope.o
 
-globals.o:		globals.cpp globals.h
+globals.o:		globals.cpp globals.h scope.h nodes.h
 			$(CC) -c globals.cpp -o globals.o
 
 parser.o:		parser.c parser.h parser.y globals.h
