@@ -11,6 +11,21 @@ void ProgramNode::eval() {
 		(*i)->eval();
 };
 
+void DeclNode::eval() {
+	type->eval();
+	id->eval();
+	if (val != NULL)
+		val->eval();
+};
+
+void IDNode::eval() {
+	std::cout << "ID: " << id << std::endl;
+};
+
+void TypeNode::eval() {
+	std::cout << "Type: " << type << std::endl;
+};
+
 void IfNode::eval() {
 	condition->eval();
 	ifCode->eval();

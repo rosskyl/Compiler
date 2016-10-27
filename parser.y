@@ -101,8 +101,8 @@ lines:		  //empty string
 			| lines line
 ;
 
-line:		  separator
-			| stmts separator
+line:			separator
+			| stmts separator	{ 	$$ = $1;	}
 ;
 
 // line separator
@@ -110,18 +110,18 @@ separator:	NEWLINE
 			| SEMICOLON
 ;
 
-stmts:		block
-			| stmt
+stmts:			block	{	$$ = $1;	}
+			| stmt	{	$$ = $1;	}
 ;
 
-stmt:		  if_stmt
+stmt:			if_stmt
 			| while
 			| RETURN exp
 			| BREAK
 			| CONTINUE
 			| PASS
 			| assign
-			| decl
+			| decl		{	$$ = $1;	}
 			| print
 ;
 
@@ -132,21 +132,39 @@ print:		PRINT L_PAREN exp R_PAREN 	//{	printf("%g", $3);	}
 		| PRINT L_PAREN boolExp R_PAREN	//{	printf("%g", $3);	}
 ;
 
-type:		INT_KEYWORD
-			| BOOL_KEYWORD
-			//| ID //will need to make sure the ID is a class or type
+type:		INT_KEYWORD	{	TypeNode* tmpNode = new TypeNode;
+					tmpNode->type = "int";
+					$$ = tmpNode;
+				}
+		| BOOL_KEYWORD
+		//| ID //will need to make sure the ID is a class or type
 ;
 
-decl:		type ID					//{ globalScope.initializeVar(id_value,-1);	}
-			| type ID EQUAL exp		//{ globalScope.initializeVar(id_value,$4);	}
+id:		ID	{	IDNode* tmpNode = new IDNode;
+				tmpNode->id = id_value;
+				$$ = tmpNode;
+			}
 ;
 
-assign:		ID EQUAL exp			//{ globalScope.setVar(id_value, $3);	}
-			| ID PLUS_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) + $3);	}
-			| ID MINUS_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) - $3);	}
-			| ID TIMES_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) * $3);	}
-			| ID DIVIDE_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) / $3);	}
-			| ID MODULUS_EQUAL exp 	//{ globalScope.setVar(id_value, static_cast<int>(globalScope.getVar(id_value)) % static_cast<int>($3));	}
+decl:		type id			{	DeclNode* tmpNode = new DeclNode;
+						tmpNode->type =static_cast<TypeNode*>($1);
+						tmpNode->id = static_cast<IDNode*>($2);
+						$$ = tmpNode;
+					}
+		| type id EQUAL exp	{	DeclNode* tmpNode = new DeclNode;
+						tmpNode->type =static_cast<TypeNode*>($1);
+						tmpNode->id = static_cast<IDNode*>($2);
+						tmpNode->val = $4;
+						$$ = tmpNode;
+					}	//{ globalScope.initializeVar(id_value,$4);	}
+;
+
+assign:			id EQUAL exp		//{ globalScope.setVar(id_value, $3);	}
+			| id PLUS_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) + $3);	}
+			| id MINUS_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) - $3);	}
+			| id TIMES_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) * $3);	}
+			| id DIVIDE_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) / $3);	}
+			| id MODULUS_EQUAL exp 	//{ globalScope.setVar(id_value, static_cast<int>(globalScope.getVar(id_value)) % static_cast<int>($3));	}
 ;
 
 while:		WHILE boolExp stmts
@@ -160,11 +178,13 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 
 exp:			INTEGER 		{	IntNode* tmpNode = new IntNode;
 							tmpNode->val = int_value;
-							tmpNode->eval();
 							$$ = tmpNode;
 						}
-			| FLOAT				//{ $$ = float_value; }
-			| ID 				//{ $$ = globalScope.getVar(id_value); }
+			| FLOAT			{	FloatNode* tmpNode = new FloatNode;
+							tmpNode->val = float_value;
+							$$ = tmpNode;
+						}
+			| id 				//{ $$ = globalScope.getVar(id_value); }
 			| exp PLUS exp			//{ $$ = $1 + $3;	}
 			| exp MINUS exp			//{ $$ = $1 - $3;	}
 			| exp TIMES exp			//{ $$ = $1 * $3;	}
@@ -200,7 +220,10 @@ void yyerror(const char* s)
 
 main (int, char**)
 {
-  yyparse ();
-  printf("\n");
-  return 0;
+	initializeVars();	
+	yyparse ();
+	printf("\n");
+	progNode.eval();
+
+	return 0;
 }

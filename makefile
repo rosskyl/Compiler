@@ -14,10 +14,10 @@ scope.o:		scope.cpp scope.h parser.y
 globals.o:		globals.cpp globals.h scope.h nodes.h
 			$(CC) -c globals.cpp -o globals.o
 
-parser.o:		parser.c parser.y globals.h scope.h nodes.h
+parser.o:		parser.c parser.y globals.h nodes.h
 			$(CC) -c parser.c -o parser.o
 
-parser.h:		parser.y
+parser.h:		parser.y globals.h nodes.h
 			bison -d parser.y
 			
 parser.c:		parser.y

@@ -8,6 +8,9 @@ enum BoolOp {LT_OP, GT_OP, EQ_OP, NOT_EQ_OP, LT_EQ_OP, GT_EQ_OP, NOT_OP};
 
 struct Node;
 struct ProgramNode;
+struct DeclNode;
+struct IDNode;
+struct TypeNode;
 struct IfNode;
 struct WhileNode;
 struct BlockNode;
@@ -27,11 +30,28 @@ struct ProgramNode : Node {
 	std::vector<Node*> lines;
 };
 
+struct DeclNode : Node {
+	virtual void eval();
+	TypeNode* type;
+	IDNode* id;
+	Node* val;//optional
+};
+
+struct IDNode : Node {
+	virtual void eval();
+	char* id;
+};
+
+struct TypeNode : Node {
+	virtual void eval();
+	char* type;
+};
+
 struct IfNode : Node {
 	virtual void eval();
 	BoolExpNode* condition;
 	Node* ifCode;
-	Node* elseCode;
+	Node* elseCode;//optional
 };
 
 struct WhileNode : Node {
