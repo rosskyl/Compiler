@@ -110,17 +110,18 @@ separator:	NEWLINE
 			| SEMICOLON
 ;
 
-stmts:			block	{	$$ = $1;	}
-			| stmt	{	$$ = $1;	}
+stmts:			block		{	$$ = $1;	}
+			| stmt		{	$$ = $1;	}
+			| NEWLINE stmt	{	$$ = $2;	}
 ;
 
-stmt:			if_stmt
-			| while
+stmt:			if_stmt		{	$$ = $1;	}
+			| while		{	$$ = $1;	}
 			| RETURN exp
 			| BREAK
 			| CONTINUE
 			| PASS
-			| assign
+			| assign	{	$$ = $1;	}
 			| decl		{	$$ = $1;	}
 			| print
 ;
@@ -136,7 +137,10 @@ type:		INT_KEYWORD	{	TypeNode* tmpNode = new TypeNode;
 					tmpNode->type = "int";
 					$$ = tmpNode;
 				}
-		| BOOL_KEYWORD
+		| BOOL_KEYWORD	{	TypeNode* tmpNode = new TypeNode;
+					tmpNode->type = "bool";
+					$$ = tmpNode;
+				}
 		//| ID //will need to make sure the ID is a class or type
 ;
 
@@ -159,15 +163,19 @@ decl:		type id			{	DeclNode* tmpNode = new DeclNode;
 					}	//{ globalScope.initializeVar(id_value,$4);	}
 ;
 
-assign:			id EQUAL exp		//{ globalScope.setVar(id_value, $3);	}
-			| id PLUS_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) + $3);	}
-			| id MINUS_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) - $3);	}
-			| id TIMES_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) * $3);	}
-			| id DIVIDE_EQUAL exp	//{ globalScope.setVar(id_value, globalScope.getVar(id_value) / $3);	}
-			| id MODULUS_EQUAL exp 	//{ globalScope.setVar(id_value, static_cast<int>(globalScope.getVar(id_value)) % static_cast<int>($3));	}
+assign:			id EQUAL exp		
+			| id PLUS_EQUAL exp	
+			| id MINUS_EQUAL exp	
+			| id TIMES_EQUAL exp	
+			| id DIVIDE_EQUAL exp	
+			| id MODULUS_EQUAL exp 	
 ;
 
-while:		WHILE boolExp stmts
+while:		WHILE boolExp stmts	{	WhileNode* tmpNode = new WhileNode;
+						tmpNode->condition = static_cast<BoolExpNode*>($2);
+						tmpNode->code = $3;
+						$$ = tmpNode;
+					}
 ;
 
 if_stmt:	IF boolExp separator stmts ELSE stmts
@@ -195,18 +203,58 @@ exp:			INTEGER 		{	IntNode* tmpNode = new IntNode;
 			| L_PAREN exp R_PAREN		//{ $$ = $2;		}
 ;
 
-boolExp:		exp LT exp		//{ $$ = $1 < $3;	}
-			| exp LT_EQUAL exp	//{ $$ = $1 <= $3;	}
-			| exp GT  exp		//{ $$ = $1 > $3;		}
-			| exp GT_EQUAL exp	//{ $$ = $1 >= $3;	}
-			| exp EQUAL_EQUAL exp	//{ $$ = $1 == $3;	}
-			| exp NOT_EQUAL exp	//{ $$ = $1 != $3;	}
-			| boolExp AND boolExp	//{ $$ = $1 && $3;	}
-			| boolExp OR boolExp	//{ $$ = $1 || $3;	}
-			| NOT boolExp		//{ $$ = !($2);		}
-			| L_PAREN boolExp R_PAREN	//{ $$ = $2;	}
-			| TRUE			//{ $$ = 1;		}
-			| FALSE			//{ $$ = 0;		}
+boolExp:	exp LT exp		{	BoolExpNode* tmpNode = new BoolExpNode;
+						tmpNode->lVal = $1;
+						tmpNode->rVal = $3;
+						tmpNode->op = LT_OP;
+						$$ = tmpNode;
+					}
+		| exp LT_EQUAL exp	{	BoolExpNode* tmpNode = new BoolExpNode;
+						tmpNode->lVal = $1;
+						tmpNode->rVal = $3;
+						tmpNode->op = LT_EQ_OP;
+						$$ = tmpNode;
+					}
+		| exp GT  exp		{	BoolExpNode* tmpNode = new BoolExpNode;
+						tmpNode->lVal = $1;
+						tmpNode->rVal = $3;
+						tmpNode->op = GT_OP;
+						$$ = tmpNode;
+					}
+		| exp GT_EQUAL exp	{	BoolExpNode* tmpNode = new BoolExpNode;
+						tmpNode->lVal = $1;
+						tmpNode->rVal = $3;
+						tmpNode->op = GT_EQ_OP;
+						$$ = tmpNode;
+					}
+		| exp EQUAL_EQUAL exp	{	BoolExpNode* tmpNode = new BoolExpNode;
+						tmpNode->lVal = $1;
+						tmpNode->rVal = $3;
+						tmpNode->op = EQ_OP;
+						$$ = tmpNode;
+					}
+		| exp NOT_EQUAL exp	{	BoolExpNode* tmpNode = new BoolExpNode;
+						tmpNode->lVal = $1;
+						tmpNode->rVal = $3;
+						tmpNode->op = NOT_EQ_OP;
+						$$ = tmpNode;
+					}
+		| boolExp AND boolExp	
+		| boolExp OR boolExp	
+		| NOT boolExp		{	BoolExpNode* tmpNode = new BoolExpNode;
+						tmpNode->lVal = $2;
+						tmpNode->op = NOT_OP;
+						$$ = tmpNode;
+					}
+		| L_PAREN boolExp R_PAREN	{	$$ = $2;	}
+		| TRUE		{	IntNode* tmpNode = new IntNode;
+					tmpNode->val = 1;
+					$$ = tmpNode;
+				}
+		| FALSE		{	IntNode* tmpNode = new IntNode;
+					tmpNode->val = 0;
+					$$ = tmpNode;
+				}	
 ;
 
 %%

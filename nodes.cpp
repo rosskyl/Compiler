@@ -46,7 +46,8 @@ void BlockNode::eval() {
 
 void BoolExpNode::eval() {
 	lVal->eval();
-	rVal->eval();
+	if (op != NOT_OP)
+		rVal->eval();
 };
 
 void NumExpNode::eval() {
