@@ -18,6 +18,11 @@ void DeclNode::eval() {
 		val->eval();
 };
 
+void AssignNode::eval() {
+	id->eval();
+	val->eval();
+}
+
 void IDNode::eval() {
 	std::cout << "ID: " << id << std::endl;
 };

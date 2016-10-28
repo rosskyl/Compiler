@@ -163,8 +163,20 @@ decl:		type id			{	DeclNode* tmpNode = new DeclNode;
 					}	//{ globalScope.initializeVar(id_value,$4);	}
 ;
 
-assign:			id EQUAL exp		
-			| id PLUS_EQUAL exp	
+assign:			id EQUAL exp		{	AssignNode* tmpNode = new AssignNode;
+							tmpNode->id = static_cast<IDNode*>($1);
+							tmpNode->val = $3;
+							$$ = tmpNode;
+						}
+			| id PLUS_EQUAL exp	{	AssignNode* tmpNode = new AssignNode;
+							tmpNode->id = static_cast<IDNode*>($1);
+							NumExpNode* expNode = new NumExpNode;
+							expNode->lVal = $1;
+							expNode->rVal = $3;
+							expNode->op = '+';
+							tmpNode->val = expNode;
+							$$ = tmpNode;
+						}
 			| id MINUS_EQUAL exp	
 			| id TIMES_EQUAL exp	
 			| id DIVIDE_EQUAL exp	

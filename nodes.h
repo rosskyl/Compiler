@@ -9,6 +9,7 @@ enum BoolOp {LT_OP, GT_OP, EQ_OP, NOT_EQ_OP, LT_EQ_OP, GT_EQ_OP, NOT_OP};
 struct Node;
 struct ProgramNode;
 struct DeclNode;
+struct AssignNode;
 struct IDNode;
 struct TypeNode;
 struct IfNode;
@@ -35,6 +36,12 @@ struct DeclNode : Node {
 	TypeNode* type;
 	IDNode* id;
 	Node* val;//optional
+};
+
+struct AssignNode : Node {
+	virtual void eval();
+	IDNode* id;
+	Node* val;
 };
 
 struct IDNode : Node {
