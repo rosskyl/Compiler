@@ -9,6 +9,7 @@
 #include "globals.h"
 #include "scope.h"
 #include "nodes.h"
+#include "createNodes.h"
 
 extern "C" int yylex();
 extern "C" int yyparse();
@@ -150,17 +151,8 @@ id:		ID	{	IDNode* tmpNode = new IDNode;
 			}
 ;
 
-decl:		type id			{	DeclNode* tmpNode = new DeclNode;
-						tmpNode->type =static_cast<TypeNode*>($1);
-						tmpNode->id = static_cast<IDNode*>($2);
-						$$ = tmpNode;
-					}
-		| type id EQUAL exp	{	DeclNode* tmpNode = new DeclNode;
-						tmpNode->type =static_cast<TypeNode*>($1);
-						tmpNode->id = static_cast<IDNode*>($2);
-						tmpNode->val = $4;
-						$$ = tmpNode;
-					}	//{ globalScope.initializeVar(id_value,$4);	}
+decl:		type id			{	$$ = createDeclNode($2, $1, NULL);	}
+		| type id EQUAL exp	{	$$ = createDeclNode($2, $1, $4);	}
 ;
 
 assign:			id EQUAL exp		{	AssignNode* tmpNode = new AssignNode;

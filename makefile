@@ -1,12 +1,12 @@
 CC=g++
-OBJECTS=parser.o scanner.o globals.o scope.o nodes.o #createNodes.o
+OBJECTS=parser.o scanner.o globals.o scope.o nodes.o createNodes.o
 EXE=prog
 
 $(EXE):     		$(OBJECTS)
 			$(CC) -o $(EXE) $(OBJECTS)
 
-#createNodes.o:		createNodes.cpp createNodes.h nodes.h
-#			$(CC) -c createNodes.cpp -o createNodes.o
+createNodes.o:		createNodes.cpp createNodes.h nodes.h
+			$(CC) -c createNodes.cpp -o createNodes.o
 
 nodes.o:		nodes.cpp nodes.h
 			$(CC) -c nodes.cpp -o nodes.o
