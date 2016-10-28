@@ -134,52 +134,27 @@ print:		PRINT L_PAREN exp R_PAREN 	//{	printf("%g", $3);	}
 		| PRINT L_PAREN boolExp R_PAREN	//{	printf("%g", $3);	}
 ;
 
-type:		INT_KEYWORD	{	TypeNode* tmpNode = new TypeNode;
-					tmpNode->type = "int";
-					$$ = tmpNode;
-				}
-		| BOOL_KEYWORD	{	TypeNode* tmpNode = new TypeNode;
-					tmpNode->type = "bool";
-					$$ = tmpNode;
-				}
+type:		INT_KEYWORD	{	$$ = createTypeNode("int");	}
+		| BOOL_KEYWORD	{	$$ = createTypeNode("bool");	}
 		//| ID //will need to make sure the ID is a class or type
 ;
 
-id:		ID	{	IDNode* tmpNode = new IDNode;
-				tmpNode->id = id_value;
-				$$ = tmpNode;
-			}
+id:		ID	{	$$ = createIDNode(id_value);	}
 ;
 
 decl:		type id			{	$$ = createDeclNode($2, $1, NULL);	}
 		| type id EQUAL exp	{	$$ = createDeclNode($2, $1, $4);	}
 ;
 
-assign:			id EQUAL exp		{	AssignNode* tmpNode = new AssignNode;
-							tmpNode->id = static_cast<IDNode*>($1);
-							tmpNode->val = $3;
-							$$ = tmpNode;
-						}
-			| id PLUS_EQUAL exp	{	AssignNode* tmpNode = new AssignNode;
-							tmpNode->id = static_cast<IDNode*>($1);
-							NumExpNode* expNode = new NumExpNode;
-							expNode->lVal = $1;
-							expNode->rVal = $3;
-							expNode->op = '+';
-							tmpNode->val = expNode;
-							$$ = tmpNode;
-						}
-			| id MINUS_EQUAL exp	
-			| id TIMES_EQUAL exp	
-			| id DIVIDE_EQUAL exp	
-			| id MODULUS_EQUAL exp 	
+assign:		id EQUAL exp		{	$$ = createAssignNode($1, $3, '?');	}
+		| id PLUS_EQUAL exp	{	$$ = createAssignNode($1, $3, '+');	}
+		| id MINUS_EQUAL exp	{	$$ = createAssignNode($1, $3, '-');	}
+		| id TIMES_EQUAL exp	{	$$ = createAssignNode($1, $3, '*');	}
+		| id DIVIDE_EQUAL exp	{	$$ = createAssignNode($1, $3, '/');	}
+		| id MODULUS_EQUAL exp 	{	$$ = createAssignNode($1, $3, '%');	}
 ;
 
-while:		WHILE boolExp stmts	{	WhileNode* tmpNode = new WhileNode;
-						tmpNode->condition = static_cast<BoolExpNode*>($2);
-						tmpNode->code = $3;
-						$$ = tmpNode;
-					}
+while:		WHILE boolExp stmts	{	$$ = createWhileNode($2, $3);	}
 ;
 
 if_stmt:	IF boolExp separator stmts ELSE stmts
@@ -188,77 +163,31 @@ if_stmt:	IF boolExp separator stmts ELSE stmts
 			| IF boolExp stmts
 ;
 
-exp:			INTEGER 		{	IntNode* tmpNode = new IntNode;
-							tmpNode->val = int_value;
-							$$ = tmpNode;
-						}
-			| FLOAT			{	FloatNode* tmpNode = new FloatNode;
-							tmpNode->val = float_value;
-							$$ = tmpNode;
-						}
-			| id 				//{ $$ = globalScope.getVar(id_value); }
-			| exp PLUS exp			//{ $$ = $1 + $3;	}
-			| exp MINUS exp			//{ $$ = $1 - $3;	}
-			| exp TIMES exp			//{ $$ = $1 * $3;	}
-			| exp DIVIDE exp		//{ $$ = $1 / $3;	}
-			| exp MODULUS exp		//{ $$ = static_cast<int>($1) % static_cast<int>($3);	}
-			| exp EXPONENT exp		//{ $$ = pow($1,$3);}
-			| MINUS exp  %prec NEG		//{ $$ = -$2;		}
-			| L_PAREN exp R_PAREN		//{ $$ = $2;		}
+exp:	INTEGER 		{	$$ = createIntNode(int_value);	}
+	| FLOAT			{	$$ = createFloatNode(float_value);	}
+	| id 				//{ $$ = globalScope.getVar(id_value); }
+	| exp PLUS exp			//{ $$ = $1 + $3;	}
+	| exp MINUS exp			//{ $$ = $1 - $3;	}
+	| exp TIMES exp			//{ $$ = $1 * $3;	}
+	| exp DIVIDE exp		//{ $$ = $1 / $3;	}
+	| exp MODULUS exp		//{ $$ = static_cast<int>($1) % static_cast<int>($3);	}
+	| exp EXPONENT exp		//{ $$ = pow($1,$3);}
+	| MINUS exp  %prec NEG		//{ $$ = -$2;		}
+	| L_PAREN exp R_PAREN		//{ $$ = $2;		}
 ;
 
-boolExp:	exp LT exp		{	BoolExpNode* tmpNode = new BoolExpNode;
-						tmpNode->lVal = $1;
-						tmpNode->rVal = $3;
-						tmpNode->op = LT_OP;
-						$$ = tmpNode;
-					}
-		| exp LT_EQUAL exp	{	BoolExpNode* tmpNode = new BoolExpNode;
-						tmpNode->lVal = $1;
-						tmpNode->rVal = $3;
-						tmpNode->op = LT_EQ_OP;
-						$$ = tmpNode;
-					}
-		| exp GT  exp		{	BoolExpNode* tmpNode = new BoolExpNode;
-						tmpNode->lVal = $1;
-						tmpNode->rVal = $3;
-						tmpNode->op = GT_OP;
-						$$ = tmpNode;
-					}
-		| exp GT_EQUAL exp	{	BoolExpNode* tmpNode = new BoolExpNode;
-						tmpNode->lVal = $1;
-						tmpNode->rVal = $3;
-						tmpNode->op = GT_EQ_OP;
-						$$ = tmpNode;
-					}
-		| exp EQUAL_EQUAL exp	{	BoolExpNode* tmpNode = new BoolExpNode;
-						tmpNode->lVal = $1;
-						tmpNode->rVal = $3;
-						tmpNode->op = EQ_OP;
-						$$ = tmpNode;
-					}
-		| exp NOT_EQUAL exp	{	BoolExpNode* tmpNode = new BoolExpNode;
-						tmpNode->lVal = $1;
-						tmpNode->rVal = $3;
-						tmpNode->op = NOT_EQ_OP;
-						$$ = tmpNode;
-					}
+boolExp:	exp LT exp		{	$$ = createBoolExpNode($1, $3, LT_OP);	}
+		| exp LT_EQUAL exp	{	$$ = createBoolExpNode($1, $3, LT_EQ_OP);	}
+		| exp GT  exp		{	$$ = createBoolExpNode($1, $3, GT_OP);	}
+		| exp GT_EQUAL exp	{	$$ = createBoolExpNode($1, $3, GT_EQ_OP);	}
+		| exp EQUAL_EQUAL exp	{	$$ = createBoolExpNode($1, $3, EQ_OP);	}
+		| exp NOT_EQUAL exp	{	$$ = createBoolExpNode($1, $3, NOT_EQ_OP);	}
 		| boolExp AND boolExp	
 		| boolExp OR boolExp	
-		| NOT boolExp		{	BoolExpNode* tmpNode = new BoolExpNode;
-						tmpNode->lVal = $2;
-						tmpNode->op = NOT_OP;
-						$$ = tmpNode;
-					}
+		| NOT boolExp		{	$$ = createBoolExpNode($2, NULL, NOT_OP);	}
 		| L_PAREN boolExp R_PAREN	{	$$ = $2;	}
-		| TRUE		{	IntNode* tmpNode = new IntNode;
-					tmpNode->val = 1;
-					$$ = tmpNode;
-				}
-		| FALSE		{	IntNode* tmpNode = new IntNode;
-					tmpNode->val = 0;
-					$$ = tmpNode;
-				}	
+		| TRUE		{	$$ = createIntNode(1);	}
+		| FALSE		{	$$ = createIntNode(0);	}
 ;
 
 %%
