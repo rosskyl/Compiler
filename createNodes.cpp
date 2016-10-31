@@ -82,3 +82,13 @@ BlockNode* createBlockNode() {
 	BlockNode* node = new BlockNode;
 	return node;
 }
+
+NumExpNode* createNegNumExpNode(Node* val) {
+	NumExpNode* node = new NumExpNode;
+	IntNode* negNode = new IntNode;
+	negNode->val = -1;
+	node->lVal = negNode;
+	node->rVal = val;
+	node->op = '*';
+	return node;
+}

@@ -165,14 +165,14 @@ if_stmt:	IF boolExp separator stmts ELSE stmts	{ $$ = createIfNode($2, $4, $6);	
 
 exp:	INTEGER 		{ $$ = createIntNode(int_value);	}
 	| FLOAT			{ $$ = createFloatNode(float_value);	}
-	| id 			{ $$ = createIDNode(id_value);	}
+	| id 			{ $$ = createIDNode(id_value);		}
 	| exp PLUS exp		{ $$ = createNumExpNode($1, $3, '+');	}
 	| exp MINUS exp		{ $$ = createNumExpNode($1, $3, '-');	}
 	| exp TIMES exp		{ $$ = createNumExpNode($1, $3, '*');	}
 	| exp DIVIDE exp	{ $$ = createNumExpNode($1, $3, '/');	}
 	| exp MODULUS exp	{ $$ = createNumExpNode($1, $3, '%');	}
 	| exp EXPONENT exp	{ $$ = createNumExpNode($1, $3, '^');	}
-	| MINUS exp  %prec NEG
+	| MINUS exp  %prec NEG	{ $$ = createNegNumExpNode($2);		}
 	| L_PAREN exp R_PAREN	{ $$ = $2;	}
 ;
 
