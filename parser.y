@@ -94,100 +94,100 @@ using namespace std;
 
 /* Grammar follows */
 %%
-program:    /* empty string */
-        | line program 	{	progNode.lines.push_back($$);	}
+program:	/* empty string */
+		| line program	{ progNode.lines.push_back($$);	}
 ;
 
-lines:		  //empty string
-			| line lines	{	currentNode->lines.push_back($1);	}
+lines:		//empty string
+		| line lines	{ currentNode->lines.push_back($1);	}
 ;
 
-line:			separator
-			| stmts separator	{ 	$$ = $1;	}
+line:		separator
+		| stmts separator	{ $$ = $1;	}
 ;
 
 // line separator
 separator:	NEWLINE
-			| SEMICOLON
+		| SEMICOLON
 ;
 
-stmts:			block		{	$$ = $1;	}
-			| stmt		{	$$ = $1;	}
-			| NEWLINE stmt	{	$$ = $2;	}
+stmts:		block		{ $$ = $1;	}
+		| stmt		{ $$ = $1;	}
+		| NEWLINE stmt	{ $$ = $2;	}
 ;
 
-stmt:			if_stmt		{	$$ = $1;	}
-			| while		{	$$ = $1;	}
-			| RETURN exp
-			| BREAK
-			| CONTINUE
-			| PASS
-			| assign	{	$$ = $1;	}
-			| decl		{	$$ = $1;	}
-			| print
+stmt:		if_stmt		{ $$ = $1;	}
+		| while		{ $$ = $1;	}
+		| RETURN exp
+		| BREAK
+		| CONTINUE
+		| PASS
+		| assign	{ $$ = $1;	}
+		| decl		{ $$ = $1;	}
+		| print
 ;
 
-block:		L_CURLY {currentNode = createBlockNode();} lines R_CURLY	{	$$ = currentNode;	}
+block:		L_CURLY {currentNode = createBlockNode();} lines R_CURLY	{ $$ = currentNode;	}
 ;
 
 print:		PRINT L_PAREN exp R_PAREN 	//{	printf("%g", $3);	}
 		| PRINT L_PAREN boolExp R_PAREN	//{	printf("%g", $3);	}
 ;
 
-type:		INT_KEYWORD	{	$$ = createTypeNode("int");	}
-		| BOOL_KEYWORD	{	$$ = createTypeNode("bool");	}
+type:		INT_KEYWORD	{ $$ = createTypeNode("int");	}
+		| BOOL_KEYWORD	{ $$ = createTypeNode("bool");	}
 		//| ID //will need to make sure the ID is a class or type
 ;
 
-id:		ID	{	$$ = createIDNode(id_value);	}
+id:		ID	{ $$ = createIDNode(id_value);	}
 ;
 
-decl:		type id			{	$$ = createDeclNode($2, $1, NULL);	}
-		| type id EQUAL exp	{	$$ = createDeclNode($2, $1, $4);	}
+decl:		type id			{ $$ = createDeclNode($2, $1, NULL);	}
+		| type id EQUAL exp	{ $$ = createDeclNode($2, $1, $4);	}
 ;
 
-assign:		id EQUAL exp		{	$$ = createAssignNode($1, $3, '?');	}
-		| id PLUS_EQUAL exp	{	$$ = createAssignNode($1, $3, '+');	}
-		| id MINUS_EQUAL exp	{	$$ = createAssignNode($1, $3, '-');	}
-		| id TIMES_EQUAL exp	{	$$ = createAssignNode($1, $3, '*');	}
-		| id DIVIDE_EQUAL exp	{	$$ = createAssignNode($1, $3, '/');	}
-		| id MODULUS_EQUAL exp 	{	$$ = createAssignNode($1, $3, '%');	}
+assign:		id EQUAL exp		{ $$ = createAssignNode($1, $3, '?');	}
+		| id PLUS_EQUAL exp	{ $$ = createAssignNode($1, $3, '+');	}
+		| id MINUS_EQUAL exp	{ $$ = createAssignNode($1, $3, '-');	}
+		| id TIMES_EQUAL exp	{ $$ = createAssignNode($1, $3, '*');	}
+		| id DIVIDE_EQUAL exp	{ $$ = createAssignNode($1, $3, '/');	}
+		| id MODULUS_EQUAL exp 	{ $$ = createAssignNode($1, $3, '%');	}
 ;
 
-while:		WHILE boolExp stmts	{	$$ = createWhileNode($2, $3);	}
+while:		WHILE boolExp stmts	{ $$ = createWhileNode($2, $3);	}
 ;
 
-if_stmt:	IF boolExp separator stmts ELSE stmts	{	$$ = createIfNode($2, $4, $6);	}
-			| IF boolExp separator stmts	{	$$ = createIfNode($2, $4, NULL);	}
-			| IF boolExp stmts ELSE stmts	{	$$ = createIfNode($2, $3, $5);	}
-			| IF boolExp stmts		{	$$ = createIfNode($2, $3, NULL);	}
+if_stmt:	IF boolExp separator stmts ELSE stmts	{ $$ = createIfNode($2, $4, $6);	}
+			| IF boolExp separator stmts	{ $$ = createIfNode($2, $4, NULL);	}
+			| IF boolExp stmts ELSE stmts	{ $$ = createIfNode($2, $3, $5);	}
+			| IF boolExp stmts		{ $$ = createIfNode($2, $3, NULL);	}
 ;
 
-exp:	INTEGER 		{	$$ = createIntNode(int_value);	}
-	| FLOAT			{	$$ = createFloatNode(float_value);	}
+exp:	INTEGER 		{ $$ = createIntNode(int_value);	}
+	| FLOAT			{ $$ = createFloatNode(float_value);	}
 	| id 			//{ $$ = globalScope.getVar(id_value); }
-	| exp PLUS exp		{	$$ = createNumExpNode($1, $3, '+');	}
-	| exp MINUS exp		{	$$ = createNumExpNode($1, $3, '-');	}
-	| exp TIMES exp		{	$$ = createNumExpNode($1, $3, '*');	}
-	| exp DIVIDE exp	{	$$ = createNumExpNode($1, $3, '/');	}
-	| exp MODULUS exp	{	$$ = createNumExpNode($1, $3, '%');	}
-	| exp EXPONENT exp	{	$$ = createNumExpNode($1, $3, '^');	}
+	| exp PLUS exp		{ $$ = createNumExpNode($1, $3, '+');	}
+	| exp MINUS exp		{ $$ = createNumExpNode($1, $3, '-');	}
+	| exp TIMES exp		{ $$ = createNumExpNode($1, $3, '*');	}
+	| exp DIVIDE exp	{ $$ = createNumExpNode($1, $3, '/');	}
+	| exp MODULUS exp	{ $$ = createNumExpNode($1, $3, '%');	}
+	| exp EXPONENT exp	{ $$ = createNumExpNode($1, $3, '^');	}
 	| MINUS exp  %prec NEG
-	| L_PAREN exp R_PAREN	{	$$ = $2;	}
+	| L_PAREN exp R_PAREN	{ $$ = $2;	}
 ;
 
-boolExp:	exp LT exp		{	$$ = createBoolExpNode($1, $3, LT_OP);	}
-		| exp LT_EQUAL exp	{	$$ = createBoolExpNode($1, $3, LT_EQ_OP);	}
-		| exp GT  exp		{	$$ = createBoolExpNode($1, $3, GT_OP);	}
-		| exp GT_EQUAL exp	{	$$ = createBoolExpNode($1, $3, GT_EQ_OP);	}
-		| exp EQUAL_EQUAL exp	{	$$ = createBoolExpNode($1, $3, EQ_OP);	}
-		| exp NOT_EQUAL exp	{	$$ = createBoolExpNode($1, $3, NOT_EQ_OP);	}
+boolExp:	exp LT exp		{ $$ = createBoolExpNode($1, $3, LT_OP);	}
+		| exp LT_EQUAL exp	{ $$ = createBoolExpNode($1, $3, LT_EQ_OP);	}
+		| exp GT  exp		{ $$ = createBoolExpNode($1, $3, GT_OP);	}
+		| exp GT_EQUAL exp	{ $$ = createBoolExpNode($1, $3, GT_EQ_OP);	}
+		| exp EQUAL_EQUAL exp	{ $$ = createBoolExpNode($1, $3, EQ_OP);	}
+		| exp NOT_EQUAL exp	{ $$ = createBoolExpNode($1, $3, NOT_EQ_OP);	}
 		| boolExp AND boolExp	
 		| boolExp OR boolExp	
-		| NOT boolExp		{	$$ = createBoolExpNode($2, NULL, NOT_OP);	}
-		| L_PAREN boolExp R_PAREN	{	$$ = $2;	}
-		| TRUE		{	$$ = createIntNode(1);	}
-		| FALSE		{	$$ = createIntNode(0);	}
+		| NOT boolExp		{ $$ = createBoolExpNode($2, NULL, NOT_OP);	}
+		| L_PAREN boolExp R_PAREN	{ $$ = $2;	}
+		| TRUE			{ $$ = createIntNode(1);	}
+		| FALSE			{ $$ = createIntNode(0);	}
 ;
 
 %%
