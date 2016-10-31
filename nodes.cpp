@@ -8,7 +8,8 @@ void Node::eval() {};
 void ProgramNode::eval() {
 	std::vector<Node*>::iterator i;
 	for (i = lines.begin(); i != lines.end(); i++)
-		(*i)->eval();
+		if ((*i) != NULL)
+			(*i)->eval();
 };
 
 void DeclNode::eval() {
@@ -46,7 +47,8 @@ void WhileNode::eval() {
 void BlockNode::eval() {
 	std::vector<Node*>::iterator i;
 	for (i = lines.begin(); i != lines.end(); i++)
-		(*i)->eval();
+		if ((*i) != NULL)
+			(*i)->eval();
 };
 
 void BoolExpNode::eval() {

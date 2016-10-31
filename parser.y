@@ -95,11 +95,11 @@ using namespace std;
 /* Grammar follows */
 %%
 program:	/* empty string */
-		| line program	{ progNode.lines.push_back($$);	}
+		| program line	{ progNode.lines.push_back($2);	}
 ;
 
 lines:		//empty string
-		| line lines	{ currentNode->lines.push_back($1);	}
+		| lines line	{ currentNode->lines.push_back($2);	}
 ;
 
 line:		separator
@@ -165,7 +165,7 @@ if_stmt:	IF boolExp separator stmts ELSE stmts	{ $$ = createIfNode($2, $4, $6);	
 
 exp:	INTEGER 		{ $$ = createIntNode(int_value);	}
 	| FLOAT			{ $$ = createFloatNode(float_value);	}
-	| id 			//{ $$ = globalScope.getVar(id_value); }
+	| id 			{ $$ = createIDNode(id_value);	}
 	| exp PLUS exp		{ $$ = createNumExpNode($1, $3, '+');	}
 	| exp MINUS exp		{ $$ = createNumExpNode($1, $3, '-');	}
 	| exp TIMES exp		{ $$ = createNumExpNode($1, $3, '*');	}
