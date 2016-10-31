@@ -43,11 +43,19 @@ WhileNode* createWhileNode(Node* cond, Node* code) {
 }
 
 IfNode* createIfNode(Node* cond, Node* code, Node* elseCode) {
-	
+	IfNode* node = new IfNode;
+	node->condition = static_cast<BoolExpNode*>(cond);
+	node->ifCode = code;
+	node->elseCode = elseCode;
+	return node;
 }
 
 NumExpNode* createNumExpNode(Node* lVal, Node* rVal, char op) {
-	
+	NumExpNode* node = new NumExpNode;
+	node->lVal = lVal;
+	node->rVal = rVal;
+	node->op = op;
+	return node;
 }
 
 IntNode* createIntNode(int val) {

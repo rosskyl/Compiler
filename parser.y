@@ -127,7 +127,7 @@ stmt:			if_stmt		{	$$ = $1;	}
 			| print
 ;
 
-block:		L_CURLY lines R_CURLY
+block:		L_CURLY lines R_CURLY	{	$$ = $2;	}
 ;
 
 print:		PRINT L_PAREN exp R_PAREN 	//{	printf("%g", $3);	}
@@ -157,23 +157,23 @@ assign:		id EQUAL exp		{	$$ = createAssignNode($1, $3, '?');	}
 while:		WHILE boolExp stmts	{	$$ = createWhileNode($2, $3);	}
 ;
 
-if_stmt:	IF boolExp separator stmts ELSE stmts
-			| IF boolExp separator stmts
-			| IF boolExp stmts ELSE stmts
-			| IF boolExp stmts
+if_stmt:	IF boolExp separator stmts ELSE stmts	{	$$ = createIfNode($2, $4, $6);	}
+			| IF boolExp separator stmts	{	$$ = createIfNode($2, $4, NULL);	}
+			| IF boolExp stmts ELSE stmts	{	$$ = createIfNode($2, $3, $5);	}
+			| IF boolExp stmts		{	$$ = createIfNode($2, $3, NULL);	}
 ;
 
 exp:	INTEGER 		{	$$ = createIntNode(int_value);	}
 	| FLOAT			{	$$ = createFloatNode(float_value);	}
-	| id 				//{ $$ = globalScope.getVar(id_value); }
-	| exp PLUS exp			//{ $$ = $1 + $3;	}
-	| exp MINUS exp			//{ $$ = $1 - $3;	}
-	| exp TIMES exp			//{ $$ = $1 * $3;	}
-	| exp DIVIDE exp		//{ $$ = $1 / $3;	}
-	| exp MODULUS exp		//{ $$ = static_cast<int>($1) % static_cast<int>($3);	}
-	| exp EXPONENT exp		//{ $$ = pow($1,$3);}
-	| MINUS exp  %prec NEG		//{ $$ = -$2;		}
-	| L_PAREN exp R_PAREN		//{ $$ = $2;		}
+	| id 			//{ $$ = globalScope.getVar(id_value); }
+	| exp PLUS exp		{	$$ = createNumExpNode($1, $3, '+');	}
+	| exp MINUS exp		{	$$ = createNumExpNode($1, $3, '-');	}
+	| exp TIMES exp		{	$$ = createNumExpNode($1, $3, '*');	}
+	| exp DIVIDE exp	{	$$ = createNumExpNode($1, $3, '/');	}
+	| exp MODULUS exp	{	$$ = createNumExpNode($1, $3, '%');	}
+	| exp EXPONENT exp	{	$$ = createNumExpNode($1, $3, '^');	}
+	| MINUS exp  %prec NEG
+	| L_PAREN exp R_PAREN	{	$$ = $2;	}
 ;
 
 boolExp:	exp LT exp		{	$$ = createBoolExpNode($1, $3, LT_OP);	}
