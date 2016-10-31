@@ -78,4 +78,7 @@ BoolExpNode* createBoolExpNode(Node* lVal, Node* rVal, BoolOp op) {
 	return node;
 }
 
-
+BlockNode* createBlockNode() {
+	BlockNode* node = new BlockNode;
+	return node;
+}

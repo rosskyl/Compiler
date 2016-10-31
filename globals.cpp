@@ -13,7 +13,7 @@ Scope globalScope;
 
 ProgramNode progNode;
 
-Node* currentNode = &progNode;
+BlockNode* currentNode;
 
 
 void initializeVars() {

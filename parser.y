@@ -99,7 +99,7 @@ program:    /* empty string */
 ;
 
 lines:		  //empty string
-			| lines line
+			| line lines	{	currentNode->lines.push_back($1);	}
 ;
 
 line:			separator
@@ -127,7 +127,7 @@ stmt:			if_stmt		{	$$ = $1;	}
 			| print
 ;
 
-block:		L_CURLY lines R_CURLY	{	$$ = $2;	}
+block:		L_CURLY {currentNode = createBlockNode();} lines R_CURLY	{	$$ = currentNode;	}
 ;
 
 print:		PRINT L_PAREN exp R_PAREN 	//{	printf("%g", $3);	}
