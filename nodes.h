@@ -4,7 +4,7 @@
 #include <vector>
 
 //have all inherit from Node
-enum BoolOp {LT_OP, GT_OP, EQ_OP, NOT_EQ_OP, LT_EQ_OP, GT_EQ_OP, NOT_OP};
+enum BoolOp {LT_OP, GT_OP, EQ_OP, NOT_EQ_OP, LT_EQ_OP, GT_EQ_OP};
 
 struct Node;
 struct ProgramNode;
@@ -15,6 +15,7 @@ struct TypeNode;
 struct IfNode;
 struct WhileNode;
 struct BlockNode;
+struct BoolLogNode;
 struct BoolExpNode;
 struct NumExpNode;
 struct IntNode;
@@ -70,6 +71,13 @@ struct WhileNode : Node {
 struct BlockNode : Node {
 	virtual void eval();
 	std::vector<Node*> lines;
+};
+
+struct BoolLogNode : Node {
+	virtual void eval();
+	Node* lVal;
+	Node* rVal;
+	char op;
 };
 
 struct BoolExpNode : Node {

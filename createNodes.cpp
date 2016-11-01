@@ -92,3 +92,11 @@ NumExpNode* createNegNumExpNode(Node* val) {
 	node->op = '*';
 	return node;
 }
+
+BoolLogNode* createBoolLogNode(Node* lVal, Node* rVal, char op) {
+	BoolLogNode* node = new BoolLogNode;
+	node->lVal = lVal;
+	node->rVal = rVal;
+	node->op = op;
+	return node;
+}

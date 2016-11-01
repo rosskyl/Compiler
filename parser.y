@@ -182,9 +182,9 @@ boolExp:	exp LT exp		{ $$ = createBoolExpNode($1, $3, LT_OP);	}
 		| exp GT_EQUAL exp	{ $$ = createBoolExpNode($1, $3, GT_EQ_OP);	}
 		| exp EQUAL_EQUAL exp	{ $$ = createBoolExpNode($1, $3, EQ_OP);	}
 		| exp NOT_EQUAL exp	{ $$ = createBoolExpNode($1, $3, NOT_EQ_OP);	}
-		| boolExp AND boolExp	
-		| boolExp OR boolExp	
-		| NOT boolExp		{ $$ = createBoolExpNode($2, NULL, NOT_OP);	}
+		| boolExp AND boolExp	{ $$ = createBoolLogNode($1, $3, '&');	}
+		| boolExp OR boolExp	{ $$ = createBoolLogNode($1, $3, '|');	}
+		| NOT boolExp			{ $$ = createBoolLogNode(NULL, $2, '!');	}
 		| L_PAREN boolExp R_PAREN	{ $$ = $2;	}
 		| TRUE			{ $$ = createIntNode(1);	}
 		| FALSE			{ $$ = createIntNode(0);	}

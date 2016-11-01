@@ -51,10 +51,15 @@ void BlockNode::eval() {
 			(*i)->eval();
 };
 
+void BoolLogNode::eval() {
+	if (op != '!')
+		lVal->eval();
+	rVal->eval();
+};
+
 void BoolExpNode::eval() {
 	lVal->eval();
-	if (op != NOT_OP)
-		rVal->eval();
+	rVal->eval();
 };
 
 void NumExpNode::eval() {

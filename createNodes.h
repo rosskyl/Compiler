@@ -15,5 +15,6 @@ FloatNode*	createFloatNode(float val);
 BoolExpNode*	createBoolExpNode(Node* lVal, Node* rVal, BoolOp op);
 BlockNode*	createBlockNode();
 NumExpNode*	createNegNumExpNode(Node* val);
+BoolLogNode*	createBoolLogNode(Node* lVal, Node* rVal, char op);
 
 #endif

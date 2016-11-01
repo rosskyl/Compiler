@@ -17,13 +17,13 @@ scope.o:		scope.cpp scope.h parser.y
 globals.o:		globals.cpp globals.h scope.h nodes.h
 			$(CC) -c globals.cpp -o globals.o
 
-parser.o:		parser.c parser.y globals.h nodes.h
+parser.o:		parser.c parser.y globals.h nodes.h createNodes.h
 			$(CC) -c parser.c -o parser.o
 
-parser.h:		parser.y globals.h nodes.h
+parser.h:		parser.y globals.h nodes.h createNodes.h
 			bison -d parser.y
 			
-parser.c:		parser.y
+parser.c:		parser.y globals.h nodes.h createNodes.h
 			bison -d parser.y
 
 scanner.o:		scanner.c scanner.lex globals.h
