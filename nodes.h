@@ -3,23 +3,23 @@
 
 #include <vector>
 
-//have all inherit from Node
+
 enum BoolOp {LT_OP, GT_OP, EQ_OP, NOT_EQ_OP, LT_EQ_OP, GT_EQ_OP};
 
-struct Node;
-struct ProgramNode;
-struct DeclNode;
-struct AssignNode;
-struct IDNode;
-struct TypeNode;
-struct IfNode;
-struct WhileNode;
-struct BlockNode;
-struct BoolLogNode;
-struct BoolExpNode;
-struct NumExpNode;
-struct IntNode;
-struct FloatNode;
+struct Node; // base node
+struct ProgramNode; // the main program node
+struct DeclNode; // declaration of variable node
+struct AssignNode; // assigning variable node
+struct IDNode; // variable node
+struct TypeNode; // type node
+struct IfNode; // if node
+struct WhileNode; // while node
+struct BlockNode; // block of instructions node
+struct BoolLogNode; // logical expression node - and, or, not(!)
+struct BoolExpNode; // boolean comparator node
+struct NumExpNode; // number expression node
+struct IntNode; // int constant node
+struct FloatNode; // float constant node
 
 
 struct Node {
