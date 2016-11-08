@@ -38,6 +38,7 @@ struct FloatNode; // float constant node
 
 struct Node {
 	virtual void eval();
+//	virtual Value* codegen();
 	Node* parent;
 };
 

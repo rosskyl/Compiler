@@ -199,7 +199,7 @@ void yyerror(const char* s)
   exit(-1);
 }
 
-main (int, char**)
+int main (int, char**)
 {
 	initializeVars();	
 	yyparse ();
