@@ -1,4 +1,5 @@
 #include "llvm/ADT/APFloat.h"
+#include "llvm/ADT/APInt.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/IR/BasicBlock.h"
 #include "llvm/IR/Constants.h"
@@ -18,13 +19,16 @@
 using namespace llvm;
 
 
-
 llvm::LLVMContext Node::theContext;
 llvm::IRBuilder<> Node::Builder(Node::theContext);
 std::unique_ptr<llvm::Module> Node::theModule;
 std::map<std::string, llvm::Value*> Node::namedValues;
 
 
+Value* Node::LogError(const char* str) {
+	std::cerr << "Error: " << str << std::endl;
+	return NULL;
+}
 
 
 
@@ -113,6 +117,10 @@ Value* AssignNode::codegen() {
 }
 
 Value* IDNode::codegen() {
+	Value *V = namedValues[id];
+	if (!V)
+		LogError("Unknown variable name");
+	return V;
 }
 
 Value* TypeNode::codegen() {
@@ -137,6 +145,7 @@ Value* NumExpNode::codegen() {
 }
 
 Value* IntNode::codegen() {
+//	return ConstantInt::get(Node::theContext, APInt(val));
 }
 
 Value* FloatNode::codegen() {

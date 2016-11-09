@@ -41,6 +41,7 @@ struct FloatNode; // float constant node
 struct Node {
 	virtual void eval();
 	virtual llvm::Value* codegen();
+	llvm::Value* LogError(const char* str);
 	Node* parent;
 
 	static llvm::LLVMContext theContext;
