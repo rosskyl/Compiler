@@ -17,6 +17,17 @@
 
 using namespace llvm;
 
+
+
+llvm::LLVMContext Node::theContext;
+llvm::IRBuilder<> Node::Builder(Node::theContext);
+std::unique_ptr<llvm::Module> Node::theModule;
+std::map<std::string, llvm::Value*> Node::namedValues;
+
+
+
+
+
 void Node::eval() {}
 
 void ProgramNode::eval() {
@@ -89,7 +100,8 @@ void FloatNode::eval() {
 	std::cout << "Float: " << val << std::endl;
 }
 
-Value* Node::codegen() {}
+Value* Node::codegen() {
+}
 
 Value* ProgramNode::codegen() {
 }
@@ -128,4 +140,5 @@ Value* IntNode::codegen() {
 }
 
 Value* FloatNode::codegen() {
+	return ConstantFP::get(Node::theContext, APFloat(val));
 }

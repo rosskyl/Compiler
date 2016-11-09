@@ -4,7 +4,7 @@ EXE=prog
 MFLAGS=`llvm-config --cxxflags --ldflags --system-libs --libs core`
 
 $(EXE):     		$(OBJECTS)
-			$(CC) -o $(EXE) $(MFLAGS) $(OBJECTS)
+			$(CC) -o $(EXE) $(MFLAGS) $(OBJECTS) $(MFLAGS)
 
 createNodes.o:		createNodes.cpp createNodes.h nodes.h
 			$(CC) -c createNodes.cpp $(MFLAGS) -o createNodes.o
