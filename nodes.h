@@ -16,6 +16,7 @@
 
 
 #include <vector>
+#include <memory>
 
 
 enum BoolOp {LT_OP, GT_OP, EQ_OP, NOT_EQ_OP, LT_EQ_OP, GT_EQ_OP};
@@ -36,10 +37,17 @@ struct IntNode; // int constant node
 struct FloatNode; // float constant node
 
 
+
 struct Node {
 	virtual void eval();
 	virtual llvm::Value* codegen();
 	Node* parent;
+
+	static llvm::LLVMContext theContext;
+	static llvm::IRBuilder<> Builder;
+	static std::unique_ptr<llvm::Module> theModule;
+	static std::map<std::string, llvm::Value*> namedValues;
+
 };
 
 struct ProgramNode : Node {
