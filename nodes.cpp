@@ -15,7 +15,7 @@
 #include <iostream>
 #include "nodes.h"
 
-
+using namespace llvm;
 
 void Node::eval() {}
 
@@ -89,4 +89,43 @@ void FloatNode::eval() {
 	std::cout << "Float: " << val << std::endl;
 }
 
+Value* Node::codegen() {}
 
+Value* ProgramNode::codegen() {
+}
+
+Value* DeclNode::codegen() {
+}
+
+Value* AssignNode::codegen() {
+}
+
+Value* IDNode::codegen() {
+}
+
+Value* TypeNode::codegen() {
+}
+
+Value* IfNode::codegen() {
+}
+
+Value* WhileNode::codegen() {
+}
+
+Value* BlockNode::codegen() {
+}
+
+Value* BoolLogNode::codegen() {
+}
+
+Value* BoolExpNode::codegen() {
+}
+
+Value* NumExpNode::codegen() {
+}
+
+Value* IntNode::codegen() {
+}
+
+Value* FloatNode::codegen() {
+}

@@ -11,6 +11,8 @@
 #include "nodes.h"
 #include "createNodes.h"
 
+#include <string>
+
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;

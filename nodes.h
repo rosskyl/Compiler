@@ -38,17 +38,19 @@ struct FloatNode; // float constant node
 
 struct Node {
 	virtual void eval();
-//	virtual Value* codegen();
+	virtual llvm::Value* codegen();
 	Node* parent;
 };
 
 struct ProgramNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	std::vector<Node*> lines;
 };
 
 struct DeclNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	TypeNode* type;
 	IDNode* id;
 	Node* val;//optional
@@ -56,22 +58,26 @@ struct DeclNode : Node {
 
 struct AssignNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	IDNode* id;
 	Node* val;
 };
 
 struct IDNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	char* id;
 };
 
 struct TypeNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	char* type;
 };
 
 struct IfNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	BoolExpNode* condition;
 	Node* ifCode;
 	Node* elseCode;//optional
@@ -79,17 +85,20 @@ struct IfNode : Node {
 
 struct WhileNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	BoolExpNode* condition;
 	Node* code;
 };
 
 struct BlockNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	std::vector<Node*> lines;
 };
 
 struct BoolLogNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	Node* lVal;
 	Node* rVal;
 	char op;
@@ -97,6 +106,7 @@ struct BoolLogNode : Node {
 
 struct BoolExpNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	Node* lVal;
 	Node* rVal;
 	BoolOp op;
@@ -104,6 +114,7 @@ struct BoolExpNode : Node {
 
 struct NumExpNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	Node* lVal;
 	Node* rVal;
 	char op;//'+', '-', '/', '*' '^', '%'
@@ -111,11 +122,13 @@ struct NumExpNode : Node {
 
 struct IntNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	int val;
 };
 
 struct FloatNode : Node {
 	virtual void eval();
+	virtual llvm::Value* codegen();
 	float val;
 };
 
