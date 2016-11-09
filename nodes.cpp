@@ -142,6 +142,25 @@ Value* BoolExpNode::codegen() {
 }
 
 Value* NumExpNode::codegen() {
+	Value *L = lVal->codegen();
+	Value *R = rVal->codegen();
+	if (!L || !R)
+		return nullptr;
+
+	switch (op) {
+		case '+':
+			return Builder.CreateFAdd(L, R, "addtmp");
+		case '-':
+			return Builder.CreateFSub(L, R, "subtmp");
+		case '*':
+			return Builder.CreateFMul(L, R, "multmp");
+		case '/':
+			return Builder.CreateFDiv(L, R, "divtmp");
+		case '%':
+			return Builder.CreateFRem(L, R, "remtmp");
+		default:
+			return LogError("invalid binary operator");
+	}
 }
 
 Value* IntNode::codegen() {
