@@ -100,8 +100,8 @@ program:	/* empty string */
 		| program line	{ progNode.lines.push_back($2);	}
 ;
 
-lines:		//empty string
-		| lines line	{ currentNode->lines.push_back($2);	}
+lines:		/* empty string */	{ $$ = createBlockNode();	}
+		| lines line	{ dynamic_cast<BlockNode*>($1)->lines.push_back($2);	}
 ;
 
 line:		separator
@@ -129,7 +129,7 @@ stmt:		if_stmt		{ $$ = $1;	}
 		| print
 ;
 
-block:		L_CURLY {currentNode = createBlockNode();} lines R_CURLY	{ $$ = currentNode;	}
+block:		L_CURLY lines R_CURLY	{ $$ = $2;	}
 ;
 
 print:		PRINT L_PAREN exp R_PAREN 	//{	printf("%g", $3);	}

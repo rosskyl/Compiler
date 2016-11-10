@@ -9,7 +9,6 @@ extern float float_value;
 extern char* id_value;
 extern Scope globalScope;
 extern ProgramNode progNode;
-extern BlockNode* currentNode;
 
 void initializeVars();
 

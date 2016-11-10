@@ -13,9 +13,8 @@ Scope globalScope;
 
 ProgramNode progNode;
 
-BlockNode* currentNode;
 
 
 void initializeVars() {
 	progNode.parent = NULL;
-};
+}
