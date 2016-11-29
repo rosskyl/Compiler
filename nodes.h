@@ -35,6 +35,10 @@ struct BoolExpNode; // boolean comparator node
 struct NumExpNode; // number expression node
 struct IntNode; // int constant node
 struct FloatNode; // float constant node
+struct DeclFuncNode; // function prototype
+struct AssignFuncNode; // assigning function
+struct FuncParamNode; // function parameters
+struct FuncArgNode; // function arguments, for when using function
 
 
 
@@ -139,6 +143,33 @@ struct FloatNode : Node {
 	virtual void eval();
 	virtual llvm::Value* codegen();
 	float val;
+};
+
+struct DeclFuncNode : Node {
+	virtual void eval();
+	virtual llvm::Value* codegen();
+	IDNode* name;
+	FuncParamNode* params;
+};
+
+struct AssignFuncNode : Node {
+	virtual void eval();
+	virtual llvm::Value* codegen();
+	IDNode* name;
+	FuncParamNode* params;
+	BlockNode* code;
+};
+
+struct FuncParamNode : Node {
+	virtual void eval();
+	virtual llvm::Value* codegen();
+	std::vector<TypeNode*> params;
+};
+
+struct FuncArgNode : Node {
+	virtual void eval();
+	virtual llvm::Value* codegen();
+	std::vector<IDNode*> args;
 };
 
 #endif

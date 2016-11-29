@@ -104,6 +104,31 @@ void FloatNode::eval() {
 	std::cout << "Float: " << val << std::endl;
 }
 
+void DeclFuncNode::eval() {
+	name->eval();
+	params->eval();
+}
+
+void AssignFuncNode::eval() {
+	name->eval();
+	params->eval();
+	code->eval();
+}
+
+void FuncParamNode::eval() {
+	std::vector<TypeNode*>::iterator i;
+	for (i = params.begin(); i != params.end(); i++)
+		if ((*i) != NULL)
+			(*i)->eval(); 
+}
+
+void FuncArgNode::eval() {
+	std::vector<IDNode*>::iterator i;
+	for (i = args.begin(); i != args.end(); i++)
+		if ((*i) != NULL)
+			(*i)->eval();
+}
+
 Value* Node::codegen() {
 }
 
@@ -169,4 +194,20 @@ Value* IntNode::codegen() {
 
 Value* FloatNode::codegen() {
 	return ConstantFP::get(Node::theContext, APFloat(val));
+}
+
+Value* DeclFuncNode::codegen() {
+	
+}
+
+Value* AssignFuncNode::codegen() {
+	
+}
+
+Value* FuncParamNode::codegen() {
+	
+}
+
+Value* FuncArgNode::codegen() {
+	
 }
