@@ -82,6 +82,8 @@ using namespace std;
 
 %token TYPE_KEYWORD
 
+%token COMMA
+
 
 
 %left MINUS PLUS
@@ -126,14 +128,11 @@ stmt:		if_stmt		{ $$ = $1;	}
 		| PASS
 		| assign	{ $$ = $1;	}
 		| decl		{ $$ = $1;	}
-		| print
+		| funcDecl	{ $$ = $1;	}
+		| funcAssign	{ $$ = $1;	}
 ;
 
 block:		L_CURLY lines R_CURLY	{ $$ = $2;	}
-;
-
-print:		PRINT L_PAREN exp R_PAREN 	//{	printf("%g", $3);	}
-		| PRINT L_PAREN boolExp R_PAREN	//{	printf("%g", $3);	}
 ;
 
 type:		INT_KEYWORD	{ $$ = createTypeNode("int");	}
@@ -142,6 +141,20 @@ type:		INT_KEYWORD	{ $$ = createTypeNode("int");	}
 ;
 
 id:		ID	{ $$ = createIDNode(id_value);	}
+;
+
+funcDecl:	type id L_PAREN paramList R_PAREN
+;
+
+funcAssign:	type id L_PAREN paramList R_PAREN block
+;
+
+paramList:	/* empty string */	//need to create the paramlist
+		| paramList COMMA param	//need to do this
+		| param
+;
+
+param:		type id		{ $$ = createDeclNode($2, $1, NULL);	}
 ;
 
 decl:		type id			{ $$ = createDeclNode($2, $1, NULL);	}

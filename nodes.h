@@ -163,7 +163,7 @@ struct AssignFuncNode : Node {
 struct FuncParamNode : Node {
 	virtual void eval();
 	virtual llvm::Value* codegen();
-	std::vector<TypeNode*> params;
+	std::vector<DeclNode*> params;
 };
 
 struct FuncArgNode : Node {

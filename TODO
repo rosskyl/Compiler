@@ -1,5 +1,6 @@
-Add a DeclFuncNode
-Add a AssignFuncNode
+add create func nodes
+
+add return node
 
 Check for int and float in NumExpNode::codegen for fadd or add
 Add exponent for NumExpNode::codegen

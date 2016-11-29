@@ -116,7 +116,7 @@ void AssignFuncNode::eval() {
 }
 
 void FuncParamNode::eval() {
-	std::vector<TypeNode*>::iterator i;
+	std::vector<DeclNode*>::iterator i;
 	for (i = params.begin(); i != params.end(); i++)
 		if ((*i) != NULL)
 			(*i)->eval(); 
