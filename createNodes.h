@@ -5,6 +5,10 @@
 
 TypeNode*	createTypeNode(char* type);
 IDNode*		createIDNode(char* id);
+DeclFuncNode*	createDeclFuncNode(Node* returnType, Node* name, Node* params);
+AssignFuncNode*	createAssignFuncNode(Node* returnType, Node* name, Node* params, Node* code);
+FuncParamNode*	createParamNode(Node* singleParam);
+FuncArgNode*	createArgNode();
 DeclNode*	createDeclNode(Node* id, Node* type, Node* exp);
 AssignNode*	createAssignNode(Node* id, Node* exp, char op);
 WhileNode*	createWhileNode(Node* cond, Node* code);

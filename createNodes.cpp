@@ -12,6 +12,35 @@ IDNode* createIDNode(char* id) {
 	return node;
 }
 
+DeclFuncNode* createDeclFuncNode(Node* returnType, Node* name, Node* params) {
+	DeclFuncNode* node = new DeclFuncNode;
+	node->returnType = static_cast<TypeNode*>(returnType);
+	node->name = static_cast<IDNode*>(name);
+	node->params = static_cast<FuncParamNode*>(params);
+	return node;
+}
+
+AssignFuncNode* createAssignFuncNode(Node* returnType, Node* name, Node* params, Node* code) {
+	AssignFuncNode* node = new AssignFuncNode;
+	node->returnType = static_cast<TypeNode*>(returnType);
+	node->name = static_cast<IDNode*>(name);
+	node->params = static_cast<FuncParamNode*>(params);
+	node->code = static_cast<BlockNode*>(code);
+	return node;
+}
+
+FuncParamNode* createParamNode(Node* singleParam) {
+	FuncParamNode* node = new FuncParamNode;
+	if (singleParam != NULL)
+		node->params.push_back(static_cast<DeclNode*>(singleParam));
+	return node;
+}
+
+FuncArgNode* createArgNode() {
+	FuncArgNode* node = new FuncArgNode;
+	return node;
+}
+
 DeclNode* createDeclNode(Node* id, Node* type, Node* exp) {
 	DeclNode* node = new DeclNode;
 	node->type = static_cast<TypeNode*>(type);

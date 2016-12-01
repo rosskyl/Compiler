@@ -148,6 +148,7 @@ struct FloatNode : Node {
 struct DeclFuncNode : Node {
 	virtual void eval();
 	virtual llvm::Value* codegen();
+	TypeNode* returnType;
 	IDNode* name;
 	FuncParamNode* params;
 };
@@ -155,6 +156,7 @@ struct DeclFuncNode : Node {
 struct AssignFuncNode : Node {
 	virtual void eval();
 	virtual llvm::Value* codegen();
+	TypeNode* returnType;
 	IDNode* name;
 	FuncParamNode* params;
 	BlockNode* code;

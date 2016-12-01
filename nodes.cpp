@@ -105,11 +105,13 @@ void FloatNode::eval() {
 }
 
 void DeclFuncNode::eval() {
+	returnType->eval();
 	name->eval();
 	params->eval();
 }
 
 void AssignFuncNode::eval() {
+	returnType->eval();
 	name->eval();
 	params->eval();
 	code->eval();

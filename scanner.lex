@@ -30,6 +30,7 @@ float {digit}*\.{digit}+
 {integer}		{	int_value = atoi(yytext);
 				return INTEGER;	}
 \n			{	return NEWLINE;	}
+","		{	return COMMA_T;	}
 ";"			{	return SEMICOLON;	}
 "+="		{	return PLUS_EQUAL;	}
 "-="		{	return MINUS_EQUAL;	}

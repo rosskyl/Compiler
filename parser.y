@@ -82,7 +82,7 @@ using namespace std;
 
 %token TYPE_KEYWORD
 
-%token COMMA
+%token COMMA_T
 
 
 
@@ -143,15 +143,15 @@ type:		INT_KEYWORD	{ $$ = createTypeNode("int");	}
 id:		ID	{ $$ = createIDNode(id_value);	}
 ;
 
-funcDecl:	type id L_PAREN paramList R_PAREN
+funcDecl:	type id L_PAREN paramList R_PAREN	{ $$ = createDeclFuncNode($1, $2, $4);	}
 ;
 
-funcAssign:	type id L_PAREN paramList R_PAREN block
+funcAssign:	type id L_PAREN paramList R_PAREN block	{ $$ = createAssignFuncNode($1, $2, $4, $6);	}
 ;
 
-paramList:	/* empty string */	//need to create the paramlist
-		| paramList COMMA param	//need to do this
-		| param
+paramList:	/* empty string */	{ $$ = createParamNode(NULL);	}
+		| paramList COMMA_T param	{ dynamic_cast<FuncParamNode*>($1)->params.push_back(dynamic_cast<DeclNode*>($3));	}
+		| param			{ $$ = createParamNode($1);	}
 ;
 
 param:		type id		{ $$ = createDeclNode($2, $1, NULL);	}
