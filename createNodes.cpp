@@ -36,6 +36,13 @@ FuncParamNode* createParamNode(Node* singleParam) {
 	return node;
 }
 
+FuncCallNode* createFuncCallNode(Node* name, Node* args) {
+	FuncCallNode* node = new FuncCallNode;
+	node->name = static_cast<IDNode*>(name);
+	node->args = static_cast<FuncArgNode*>(args);
+	return node;
+};
+
 FuncArgNode* createArgNode() {
 	FuncArgNode* node = new FuncArgNode;
 	return node;

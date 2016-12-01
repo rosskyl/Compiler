@@ -8,6 +8,7 @@ IDNode*		createIDNode(char* id);
 DeclFuncNode*	createDeclFuncNode(Node* returnType, Node* name, Node* params);
 AssignFuncNode*	createAssignFuncNode(Node* returnType, Node* name, Node* params, Node* code);
 FuncParamNode*	createParamNode(Node* singleParam);
+FuncCallNode*	createFuncCallNode(Node* name, Node* args);
 FuncArgNode*	createArgNode();
 DeclNode*	createDeclNode(Node* id, Node* type, Node* exp);
 AssignNode*	createAssignNode(Node* id, Node* exp, char op);
