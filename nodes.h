@@ -38,6 +38,7 @@ struct FloatNode; // float constant node
 struct DeclFuncNode; // function prototype
 struct AssignFuncNode; // assigning function
 struct FuncParamNode; // function parameters
+struct FuncCallNode; // calling a function
 struct FuncArgNode; // function arguments, for when using function
 
 
@@ -166,6 +167,13 @@ struct FuncParamNode : Node {
 	virtual void eval();
 	virtual llvm::Value* codegen();
 	std::vector<DeclNode*> params;
+};
+
+struct FuncCallNode : Node {
+	virtual void eval();
+	virtual llvm::Value* codegen();
+	IDNode* name;
+	FuncArgNode* args;
 };
 
 struct FuncArgNode : Node {

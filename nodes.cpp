@@ -124,6 +124,11 @@ void FuncParamNode::eval() {
 			(*i)->eval(); 
 }
 
+void FuncCallNode::eval() {
+	name->eval();
+	args->eval();
+}
+
 void FuncArgNode::eval() {
 	std::vector<IDNode*>::iterator i;
 	for (i = args.begin(); i != args.end(); i++)
@@ -207,6 +212,10 @@ Value* AssignFuncNode::codegen() {
 }
 
 Value* FuncParamNode::codegen() {
+	
+}
+
+Value* FuncCallNode::codegen() {
 	
 }
 
