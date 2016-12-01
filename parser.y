@@ -157,6 +157,17 @@ paramList:	/* empty string */	{ $$ = createParamNode(NULL);	}
 param:		type id		{ $$ = createDeclNode($2, $1, NULL);	}
 ;
 
+funcCall:	id L_PAREN argList R_PAREN	{ $$ = createFuncCallNode($1, $3);	}
+;
+
+argList:	/* empty */	{ $$ = createArgNode(NULL);	}
+		| argList COMMA_T arg	{ dynamic_cast<FuncArgNode*>($1)->args.push_back(dynamic_cast<IDNode*>($3));	}
+		| arg		{ $$ = createArgNode($1);	}
+;
+
+arg:		id	{ $$ = $1;	}
+;
+
 decl:		type id			{ $$ = createDeclNode($2, $1, NULL);	}
 		| type id EQUAL exp	{ $$ = createDeclNode($2, $1, $4);	}
 ;
@@ -189,6 +200,7 @@ exp:	INTEGER 		{ $$ = createIntNode(int_value);	}
 	| exp EXPONENT exp	{ $$ = createNumExpNode($1, $3, '^');	}
 	| MINUS exp  %prec NEG	{ $$ = createNegNumExpNode($2);		}
 	| L_PAREN exp R_PAREN	{ $$ = $2;	}
+	| funcCall		{ $$ = $1;	}
 ;
 
 boolExp:	exp LT exp		{ $$ = createBoolExpNode($1, $3, LT_OP);	}

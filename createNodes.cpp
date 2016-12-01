@@ -41,10 +41,12 @@ FuncCallNode* createFuncCallNode(Node* name, Node* args) {
 	node->name = static_cast<IDNode*>(name);
 	node->args = static_cast<FuncArgNode*>(args);
 	return node;
-};
+}
 
-FuncArgNode* createArgNode() {
+FuncArgNode* createArgNode(Node* singleArg) {
 	FuncArgNode* node = new FuncArgNode;
+	if (singleArg != NULL)
+		node->args.push_back(static_cast<IDNode*>(singleArg));
 	return node;
 }
 
