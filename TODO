@@ -1,4 +1,4 @@
-allow functions as exp
+allow functions as boolExp
 
 add return node
 

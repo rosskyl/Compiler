@@ -215,6 +215,7 @@ boolExp:	exp LT exp		{ $$ = createBoolExpNode($1, $3, LT_OP);	}
 		| L_PAREN boolExp R_PAREN	{ $$ = $2;	}
 		| TRUE			{ $$ = createIntNode(1);	}
 		| FALSE			{ $$ = createIntNode(0);	}
+		| funcCall		{ $$ = $1;	}
 ;
 
 %%
