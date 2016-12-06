@@ -138,3 +138,9 @@ BoolLogNode* createBoolLogNode(Node* lVal, Node* rVal, char op) {
 	node->op = op;
 	return node;
 }
+
+ReturnNode* createReturnNode(Node* returned) {
+	ReturnNode* node = new ReturnNode;
+	node->returned = returned;
+	return node;
+}

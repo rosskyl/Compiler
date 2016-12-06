@@ -130,6 +130,7 @@ stmt:		if_stmt		{ $$ = $1;	}
 		| decl		{ $$ = $1;	}
 		| funcDecl	{ $$ = $1;	}
 		| funcAssign	{ $$ = $1;	}
+		| return	{ $$ = $1;	}
 ;
 
 block:		L_CURLY lines R_CURLY	{ $$ = $2;	}
@@ -166,6 +167,10 @@ argList:	/* empty */	{ $$ = createArgNode(NULL);	}
 ;
 
 arg:		id	{ $$ = $1;	}
+;
+
+return:		RETURN exp		{ $$ = createReturnNode($2);	}
+		| RETURN boolExp	{ $$ = createReturnNode($2);	}
 ;
 
 decl:		type id			{ $$ = createDeclNode($2, $1, NULL);	}

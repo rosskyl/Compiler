@@ -40,6 +40,7 @@ struct AssignFuncNode; // assigning function
 struct FuncParamNode; // function parameters
 struct FuncCallNode; // calling a function
 struct FuncArgNode; // function arguments, for when using function
+struct ReturnNode; // a return statement
 
 
 
@@ -180,6 +181,12 @@ struct FuncArgNode : Node {
 	virtual void eval();
 	virtual llvm::Value* codegen();
 	std::vector<IDNode*> args;
+};
+
+struct ReturnNode : Node {
+	virtual void eval();
+	virtual llvm::Value* codegen();
+	Node* returned;
 };
 
 #endif

@@ -136,6 +136,11 @@ void FuncArgNode::eval() {
 			(*i)->eval();
 }
 
+void ReturnNode::eval() {
+	std::cout << "Returning: ";
+	returned->eval();
+}
+
 Value* Node::codegen() {
 }
 
@@ -220,5 +225,9 @@ Value* FuncCallNode::codegen() {
 }
 
 Value* FuncArgNode::codegen() {
+	
+}
+
+Value* ReturnNode::codegen() {
 	
 }
